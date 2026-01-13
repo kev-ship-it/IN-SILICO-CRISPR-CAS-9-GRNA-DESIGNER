@@ -188,7 +188,6 @@ if run_btn:
                 {risk_icon} {risk_label}
             </h1>
             <p style="opacity:0.8;">
-                Score: {result["off"]:.3f}
                 Score: {result["off"]*100:.3f}
             </p>
         </div>
