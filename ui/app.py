@@ -608,6 +608,5 @@ st.markdown(
 """,
 unsafe_allow_html=True
 )
-
-        components.html(html, height=520)
-        st.markdown('</div>', unsafe_allow_html=True)
+components.html(html, height=520)
+st.markdown('</div>', unsafe_allow_html=True)
