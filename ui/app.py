@@ -592,5 +592,22 @@ animate();
 
 </script>
 """
+st.markdown(
+"""
+<!-- ====================== FOOTER ====================== -->
+<footer style="
+    margin-top:40px;
+    padding:14px;
+    text-align:center;
+    font-size:13px;
+    color:#cfcfcf;
+    opacity:0.85;
+">
+    © 2026 Kevin Raj S · In-Silico CRISPR-Cas9 gRNA Designer
+</footer>
+""",
+unsafe_allow_html=True
+)
+
         components.html(html, height=520)
         st.markdown('</div>', unsafe_allow_html=True)
