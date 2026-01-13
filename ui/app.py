@@ -1,5 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, ROOT_DIR)
 from pipeline.design_grna import design_best_grna
 
 # =========================================================
