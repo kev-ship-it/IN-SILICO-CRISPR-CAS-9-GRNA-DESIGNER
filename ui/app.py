@@ -19,20 +19,20 @@ layout="wide"
 # OFF-TARGET RISK INTERPRETATION (ADDED)
 # =========================================================
 def off_target_risk_label(score):
-if score < 0.20:
-return "LOW", "🟢", "#00ff99"
-elif score < 0.50:
-return "MEDIUM", "🟡", "#ffd166"
-else:
-return "HIGH", "🔴", "#ff4e50"
+   if score < 0.20:
+      return "LOW", "🟢", "#00ff99"
+   elif score < 0.50:
+      return "MEDIUM", "🟡", "#ffd166"
+   else:
+      return "HIGH", "🔴", "#ff4e50"
 
 def on_target_risk_label(score):
-if score < 0.20:
-return "LOW", "🔴", "#ff4e50"
-elif score < 0.50:
-return "MEDIUM", "🟡", "#ffd166"
-else:
-return "HIGH", "🟢", "#00ff99"
+   if score < 0.20:
+      return "LOW", "🔴", "#ff4e50"
+   elif score < 0.50:
+      return "MEDIUM", "🟡", "#ffd166"
+   else:
+      return "HIGH", "🟢", "#00ff99"
 
 # =========================================================
 # CSS – DYNAMIC COLOR GRADIENT BACKGROUND
@@ -145,11 +145,11 @@ st.markdown('</div>', unsafe_allow_html=True)
 # RUN PIPELINE
 # =========================================================
 if run_btn:
-result = design_best_grna(dna_sequence, cas9_type=cas9_option)
+   result = design_best_grna(dna_sequence, cas9_type=cas9_option)
 
 if result is None:
-st.error(f"❌ No valid PAM sites detected for {cas9_option}")
-st.stop()
+   st.error(f"❌ No valid PAM sites detected for {cas9_option}")
+   st.stop()
 
 risk_label, risk_icon, risk_color = off_target_risk_label(result["off"])
 eff_label, eff_icon, eff_color = on_target_risk_label(result["on"])
@@ -163,11 +163,11 @@ col1, col2 = st.columns([1, 2])
 # LEFT: METRICS
 # =====================================================
 with col1:
-st.markdown(f'<div class="card"><center>Target site: {start} → {end}</center></div>', unsafe_allow_html=True)
-st.subheader("📊 ML Prediction")
+   st.markdown(f'<div class="card"><center>Target site: {start} → {end}</center></div>', unsafe_allow_html=True)
+   st.subheader("📊 ML Prediction")
 
-st.markdown(
-f"""
+   st.markdown(
+   f"""
        <div class="card" style="text-align:center;">
            <h3>🧪On-Target Efficiency (%)</h3>
            <h1 style="color:{eff_color}; font-size:42px;">
@@ -202,10 +202,10 @@ st.markdown('</div>', unsafe_allow_html=True)
 # RIGHT: 3D MOLECULAR SIMULATION  
 # =====================================================
 with col2:
-st.markdown(f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br><center>gRNA sequence : {gRNA}</center></div>', unsafe_allow_html=True)
-st.subheader("🎥 Molecular Mechanism Simulation")
+   st.markdown(f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br><center>gRNA sequence : {gRNA}</center></div>', unsafe_allow_html=True)
+   st.subheader("🎥 Molecular Mechanism Simulation")
 
-html = f"""
+   html = f"""
 <div id="dna-sim" style="width:100%; height:520px;"></div>
 <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
 <script>
