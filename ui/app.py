@@ -144,7 +144,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
-    col_left, col_right = st.columns([1.8, 1.2])  # ⬅ tighter gap, samples move left
+    col_left, col_right = st.columns([1.2, 1.2])  # ⬅ tighter gap, samples move left
 
     with col_left:
         st.markdown("### 🧬 Step-by-step guide")
