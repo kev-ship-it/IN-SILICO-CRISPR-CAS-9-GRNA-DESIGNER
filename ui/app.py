@@ -157,17 +157,17 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
         st.markdown("""
 ### 🧠 Biology primer
 
-**> DNA (Deoxyribonucleic Acid)**  
+**->  DNA (Deoxyribonucleic Acid)**  
 Stores genetic information in a double helix using **A, T, C, G**.
 
-**> RNA (Ribonucleic Acid)**  
+**->  RNA (Ribonucleic Acid)**  
 Single-stranded copy of DNA.  
 CRISPR uses **guide RNA (gRNA)** to recognize targets.
 
-**> CRISPR**  
+**->  CRISPR**  
 A programmable genome-editing system adapted from bacteria.
 
-**> Cas9** ✂️  
+**->  Cas9** ✂️  
 A DNA-cutting enzyme guided by gRNA.  
 It binds, unwinds DNA, and creates a precise cut.
 
