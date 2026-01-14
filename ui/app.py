@@ -144,7 +144,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
-    st.markdown("""
+    st.markdown(f"""<center>
 ### 🧬 Step-by-step guide
 
 1. **Paste a DNA sequence** (5′ → 3′ direction)  
@@ -162,7 +162,7 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
    - 🧪 **On-Target Efficiency** → how well Cas9 cuts
    - 🧪 **Off-Target Risk** → unintended binding likelihood
    - 🎥 **3D View** → DNA unwinding + gRNA-Cas9 binding
-""")
+</center>""")
 
     st.markdown("### 📌 Sample DNA sequences (click to copy)")
 
@@ -173,13 +173,13 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
     st.caption("✅ Works with **SpCas9 (NGG PAM)**")
 
     st.code(
-        "GCTAGCTAGCTAGGAGGTTACGATCGATCGATCGATCGATCGA",
+        "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
         language="text"
     )
     st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
 
     st.code(
-        "ATCGATCGATAGAAATCGATCGATCGATCGATCGATCGATCGA",
+        "ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
         language="text"
     )
     st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
