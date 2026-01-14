@@ -113,7 +113,7 @@ st.markdown(
 """
 <div style="text-align:center; margin-bottom:25px;">
     <h1>🧬 CRISPR-ML Studio</h1>
-    <p>DNA Unwinding · Target Zoom · gRNA–Cas9 Binding</p>
+    <p>A ML based project studio to explore the world of CRISPRg</p>
 </div>
 """,
 unsafe_allow_html=True
@@ -167,7 +167,7 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
     st.markdown("### 📌 Sample DNA sequences (click to copy)")
 
     st.code(
-        "ATGCGTACGATCGATCGGATCCGATCGATCGATCGTACGATCG",
+        "ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
         language="text"
     )
     st.caption("✅ Works with **SpCas9 (NGG PAM)**")
