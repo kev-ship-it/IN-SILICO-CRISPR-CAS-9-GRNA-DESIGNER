@@ -144,7 +144,10 @@ st.markdown('</div>', unsafe_allow_html=True)
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
-    st.markdown(f"""
+    col_left, col_right = st.columns([2, 1])
+
+    with col_left:
+        st.markdown("""
 ### 🧬 Step-by-step guide
 
 1. **Paste a DNA sequence** (5′ → 3′ direction)  
@@ -162,29 +165,28 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
    - 🧪 **On-Target Efficiency** → how well Cas9 cuts
    - 🧪 **Off-Target Risk** → unintended binding likelihood
    - 🎥 **3D View** → DNA unwinding + gRNA-Cas9 binding
-""",unsafe_allow_html=True)
+""")
 
+    with col_right:
+        st.markdown("### 📌 Sample DNA sequences")
 
+        st.code(
+            "ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
+            language="text"
+        )
+        st.caption("✅ Works with **SpCas9 (NGG PAM)**")
 
-st.markdown("### 📌 Sample DNA sequences (click to copy)")
+        st.code(
+            "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
+            language="text"
+        )
+        st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
 
-st.code(
-        "ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
-        language="text"
-    )
-st.caption("✅ Works with **SpCas9 (NGG PAM)**")
-
-st.code(
-        "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
-        language="text"
-    )
-st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
-
-st.code(
-        "ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
-        language="text"
-    )
-st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
+        st.code(
+            "ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
+            language="text"
+        )
+        st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
 
 # =========================================================
 # RUN PIPELINE
