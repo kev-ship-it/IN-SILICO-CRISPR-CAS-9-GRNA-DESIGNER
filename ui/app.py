@@ -144,25 +144,45 @@ st.markdown('</div>', unsafe_allow_html=True)
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
-    st.markdown(f"""<center>
-### 🧬 Step-by-step guide
+   st.markdown(f"""
+<div style="
+    display:flex;
+    justify-content:center;
+">
+  <div style="
+      max-width:700px;
+      text-align:center;
+      line-height:1.8;
+  ">
+    <h3>🧬 Step-by-step guide</h3>
 
-1. **Paste a DNA sequence** (5′ → 3′ direction)  
-   - Only use **A, T, C, G**
-   - Recommended length: **≥ 40 nucleotides**
+    <p>
+      <b>1. Paste a DNA sequence</b> (5′ → 3′ direction)<br>
+      • Only use <b>A, T, C, G</b><br>
+      • Recommended length: <b>≥ 40 nucleotides</b>
+    </p>
 
-2. **Select a Cas9 variant**
-   - **SpCas9** → NGG PAM (most common)
-   - **SaCas9** → NNGRRT PAM (compact Cas9)
-   - **StCas9** → NNAGAAW PAM (thermophilic)
+    <p>
+      <b>2. Select a Cas9 variant</b><br>
+      • <b>SpCas9</b> → NGG PAM (most common)<br>
+      • <b>SaCas9</b> → NNGRRT PAM (compact Cas9)<br>
+      • <b>StCas9</b> → NNAGAAW PAM (thermophilic)
+    </p>
 
-3. Click **🚀 Run CRISPR Simulation**
+    <p>
+      <b>3.</b> Click <b>🚀 Run CRISPR Simulation</b>
+    </p>
 
-4. Interpret results:
-   - 🧪 **On-Target Efficiency** → how well Cas9 cuts
-   - 🧪 **Off-Target Risk** → unintended binding likelihood
-   - 🎥 **3D View** → DNA unwinding + gRNA-Cas9 binding
-</center>""")
+    <p>
+      <b>4. Interpret results</b><br>
+      🧪 <b>On-Target Efficiency</b> → cutting performance<br>
+      🧪 <b>Off-Target Risk</b> → unintended binding likelihood<br>
+      🎥 <b>3D View</b> → DNA unwinding + gRNA–Cas9 binding
+    </p>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
 
     st.markdown("### 📌 Sample DNA sequences (click to copy)")
 
