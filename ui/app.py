@@ -316,24 +316,6 @@ const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
 
-// ====================== CAMERA CONTROLS (ZOOM + ROTATE) ======================
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-controls.enableZoom = true;      // mouse scroll zoom
-controls.enablePan = false;      // keep scene centered
-controls.enableRotate = true;
-
-controls.minDistance = 15;       // closest zoom
-controls.maxDistance = 120;      // farthest zoom
-
-controls.target.set(0, 0, 0);
-controls.update();
-
-
-scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-dirLight.position.set(20, 30, 50);
-scene.add(dirLight);
 
 // ====================== UTILS ======================
 function complement(b) {{
@@ -684,7 +666,6 @@ if (unwind > 0.9 && bind < 1) {{
     camera.lookAt(centerX, bindY, 0);
 
 }}
-    controls.update();
     renderer.render(scene, camera);
 
 }}
