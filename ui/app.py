@@ -141,9 +141,6 @@ run_btn = st.button("🚀 Run CRISPR Simulation")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
-# HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
-# =========================================================
-# =========================================================
 # HOW TO USE – BIO PRIMER + INSTRUCTIONS + SAMPLE INPUTS
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
@@ -289,8 +286,7 @@ if run_btn:
 
         html = f"""
         <div id="dna-sim" style="width:100%; height:520px;"></div>
-        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script
         <script>
 const dnaSeq = "{dna_sequence}";
 const grnaSeq = "{gRNA}";
