@@ -186,23 +186,23 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
 
 st.markdown("### 📌 Sample DNA sequences (click to copy)")
 
-    st.code(
+st.code(
         "ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
         language="text"
     )
-    st.caption("✅ Works with **SpCas9 (NGG PAM)**")
+st.caption("✅ Works with **SpCas9 (NGG PAM)**")
 
-    st.code(
+st.code(
         "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
         language="text"
     )
-    st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
+st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
 
-    st.code(
+st.code(
         "ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
         language="text"
     )
-    st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
+st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
 
 # =========================================================
 # RUN PIPELINE
