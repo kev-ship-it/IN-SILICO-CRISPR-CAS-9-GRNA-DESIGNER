@@ -145,7 +145,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
 
-    colA, colB, colC = st.columns([1.4, 1, 1.1])
+    colA, colB, colC = st.columns([1.4, 1, 1.6])
 
     # =========================
     # COLUMN 1 — BIOLOGY PRIMER
