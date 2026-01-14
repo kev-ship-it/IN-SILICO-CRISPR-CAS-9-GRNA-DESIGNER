@@ -113,7 +113,7 @@ st.markdown(
 """
 <div style="text-align:center; margin-bottom:25px;">
     <h1>🧬 CRISPR-ML Studio</h1>
-    <p>A ML based project studio to explore the world of CRISPRg</p>
+    <p>A ML based project studio to explore the world of CRISPR-cas9 gene editing</p>
 </div>
 """,
 unsafe_allow_html=True
