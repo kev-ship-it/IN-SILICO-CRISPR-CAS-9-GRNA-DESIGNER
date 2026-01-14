@@ -184,7 +184,7 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
 """, unsafe_allow_html=True)
 
 
-    st.markdown("### 📌 Sample DNA sequences (click to copy)")
+st.markdown("### 📌 Sample DNA sequences (click to copy)")
 
     st.code(
         "ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
