@@ -684,9 +684,9 @@ if (unwind > 0.9 && bind < 1) {{
     camera.lookAt(centerX, bindY, 0);
 
 }}
-
-
+    controls.update();
     renderer.render(scene, camera);
+
 }}
 
 animate();
