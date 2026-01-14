@@ -143,35 +143,74 @@ st.markdown('</div>', unsafe_allow_html=True)
 # =========================================================
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
+# =========================================================
+# HOW TO USE – BIO PRIMER + INSTRUCTIONS + SAMPLE INPUTS
+# =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
-    col_left, col_right = st.columns([1.2, 1.2])  # ⬅ tighter gap, samples move left
 
-    with col_left:
-        st.markdown("### 🧬 Step-by-step guide")
+    colA, colB, colC = st.columns([1.1, 1.2, 1.3])
 
+    # =========================
+    # COLUMN 1 — BIOLOGY PRIMER
+    # =========================
+    with colA:
+    st.markdown("""
+### 🧠 Biology primer
+
+**DNA (Deoxyribonucleic Acid)**  
+Stores genetic information in a double helix using **A, T, C, G**.
+
+**RNA (Ribonucleic Acid)**  
+Single-stranded copy of DNA.  
+CRISPR uses **guide RNA (gRNA)** to recognize targets.
+
+**CRISPR**  
+A programmable genome-editing system adapted from bacteria.
+
+**Cas9** ✂️  
+A DNA-cutting enzyme guided by gRNA.  
+It binds, unwinds DNA, and creates a precise cut.
+
+**PAM site (Protospacer Adjacent Motif)** 🧷  
+A **short DNA signature** required for Cas9 binding.  
+Without a PAM site → **Cas9 will NOT bind or cut**.
+
+• SpCas9 → **NGG**  
+• SaCas9 → **NNGRRT**  
+• StCas9 → **NNAGAAW**
+
+💡 This tool visualizes PAM recognition, DNA unwinding, and Cas9–gRNA binding.
+""")
+
+
+    # =========================
+    # COLUMN 2 — STEP GUIDE
+    # =========================
+    with colB:
         st.markdown("""
-<div style="padding-left:18px;">
+### 🧬 Step-by-step guide
 
-1. **Paste a DNA sequence** (5′ → 3′ direction)  
-   - Only use **A, T, C, G**  
-   - Recommended length: **≥ 40 nucleotides**
+**1. Paste a DNA sequence (5′ → 3′)**  
+• Use only **A, T, C, G**  
+• Recommended length: **≥ 40 nt**
 
-2. **Select a Cas9 variant**
-   - **SpCas9** → NGG PAM (most common)
-   - **SaCas9** → NNGRRT PAM (compact Cas9)
-   - **StCas9** → NNAGAAW PAM (thermophilic)
+**2. Select a Cas9 variant**  
+• **SpCas9** → NGG PAM (most common)  
+• **SaCas9** → NNGRRT PAM  
+• **StCas9** → NNAGAAW PAM  
 
-3. Click **🚀 Run CRISPR Simulation**
+**3. Click 🚀 Run CRISPR Simulation**
 
-4. Interpret results:
-   - 🧪 **On-Target Efficiency** → how well Cas9 cuts
-   - 🧪 **Off-Target Risk** → unintended binding likelihood
-   - 🎥 **3D View** → DNA unwinding + gRNA-Cas9 binding
+**4. Interpret results**  
+• 🧪 On-Target → cutting efficiency  
+• 🧪 Off-Target → unintended binding  
+• 🎥 3D View → molecular mechanism
+""")
 
-</div>
-""", unsafe_allow_html=True)
-
-    with col_right:
+    # =========================
+    # COLUMN 3 — SAMPLE INPUTS
+    # =========================
+    with colC:
         st.markdown("### 📌 Sample DNA sequences")
 
         st.code(
@@ -191,6 +230,7 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
             language="text"
         )
         st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
+
 
 # =========================================================
 # RUN PIPELINE
