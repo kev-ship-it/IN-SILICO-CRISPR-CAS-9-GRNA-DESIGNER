@@ -154,7 +154,7 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
     # COLUMN 1 — BIOLOGY PRIMER
     # =========================
     with colA:
-    st.markdown("""
+        st.markdown("""
 ### 🧠 Biology primer
 
 **DNA (Deoxyribonucleic Acid)**  
