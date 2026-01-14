@@ -148,7 +148,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
 
-    colA, colB, colC = st.columns([1.1, 1.2, 1.3])
+    colA, colB, colC = st.columns([1.3, 1.2, 1.3])
 
     # =========================
     # COLUMN 1 — BIOLOGY PRIMER
@@ -157,27 +157,19 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
         st.markdown("""
 ### 🧠 Biology primer
 
-**DNA (Deoxyribonucleic Acid)**  
+**> DNA (Deoxyribonucleic Acid)**  
 Stores genetic information in a double helix using **A, T, C, G**.
 
-**RNA (Ribonucleic Acid)**  
+**> RNA (Ribonucleic Acid)**  
 Single-stranded copy of DNA.  
 CRISPR uses **guide RNA (gRNA)** to recognize targets.
 
-**CRISPR**  
+**> CRISPR**  
 A programmable genome-editing system adapted from bacteria.
 
-**Cas9** ✂️  
+**> Cas9** ✂️  
 A DNA-cutting enzyme guided by gRNA.  
 It binds, unwinds DNA, and creates a precise cut.
-
-**PAM site (Protospacer Adjacent Motif)** 🧷  
-A **short DNA signature** required for Cas9 binding.  
-Without a PAM site → **Cas9 will NOT bind or cut**.
-
-• SpCas9 → **NGG**  
-• SaCas9 → **NNGRRT**  
-• StCas9 → **NNAGAAW**
 
 💡 This tool visualizes PAM recognition, DNA unwinding, and Cas9–gRNA binding.
 """)
