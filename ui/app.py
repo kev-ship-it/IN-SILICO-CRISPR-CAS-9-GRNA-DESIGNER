@@ -282,7 +282,7 @@ if run_btn:
         st.markdown(f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br><center>gRNA sequence : {gRNA}</center></div>', unsafe_allow_html=True)
         st.subheader("🎥 Molecular Mechanism Simulation")
 
-       html = f"""
+        html = f"""
        <div id="dna-sim" style="width:100%; height:520px;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
        <script>
