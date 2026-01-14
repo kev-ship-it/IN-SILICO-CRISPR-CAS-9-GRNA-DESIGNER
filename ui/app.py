@@ -141,6 +141,50 @@ run_btn = st.button("🚀 Run CRISPR Simulation")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
+# HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
+# =========================================================
+with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
+    st.markdown("""
+### 🧬 Step-by-step guide
+
+1. **Paste a DNA sequence** (5′ → 3′ direction)  
+   - Only use **A, T, C, G**
+   - Recommended length: **≥ 40 nucleotides**
+
+2. **Select a Cas9 variant**
+   - **SpCas9** → NGG PAM (most common)
+   - **SaCas9** → NNGRRT PAM (compact Cas9)
+   - **StCas9** → NNAGAAW PAM (thermophilic)
+
+3. Click **🚀 Run CRISPR Simulation**
+
+4. Interpret results:
+   - 🧪 **On-Target Efficiency** → how well Cas9 cuts
+   - 🧪 **Off-Target Risk** → unintended binding likelihood
+   - 🎥 **3D View** → DNA unwinding + gRNA-Cas9 binding
+""")
+
+    st.markdown("### 📌 Sample DNA sequences (click to copy)")
+
+    st.code(
+        "ATGCGTACGATCGATCGGATCCGATCGATCGATCGTACGATCG",
+        language="text"
+    )
+    st.caption("✅ Works with **SpCas9 (NGG PAM)**")
+
+    st.code(
+        "GCTAGCTAGCTAGGAGGTTACGATCGATCGATCGATCGATCGA",
+        language="text"
+    )
+    st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
+
+    st.code(
+        "ATCGATCGATAGAAATCGATCGATCGATCGATCGATCGATCGA",
+        language="text"
+    )
+    st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
+
+# =========================================================
 # RUN PIPELINE
 # =========================================================
 if run_btn:
