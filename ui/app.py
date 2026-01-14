@@ -327,13 +327,17 @@ function complement(b) {{
 
 function colorBase(b) {{
     return {{
-        A: 0xff6ec7,  // pink
-        T: 0x00bfff,  // blue
-        C: 0xffff00,  // yellow
-        G: 0x8a2be2,  // purple
-        U: 0xffa500   // orange for uracil
+        // DNA bases
+        A: 0x3CB371,  // green (Adenine)
+        T: 0x1E90FF,  // blue (Thymine)
+        C: 0xF4D03F,  // yellow (Cytosine)
+        G: 0x9B59B6,  // purple (Guanine)
+
+        // RNA base
+        U: 0xFF9F1C   // orange (Uracil)
     }}[b];
 }}
+
 function makeLabel(text, color="#ffffff") {{
     const canvas = document.createElement("canvas");
     canvas.width = 128;
