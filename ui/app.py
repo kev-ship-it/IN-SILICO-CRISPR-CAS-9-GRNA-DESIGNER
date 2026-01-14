@@ -144,11 +144,13 @@ st.markdown('</div>', unsafe_allow_html=True)
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
-    col_left, col_right = st.columns([2, 1])
+    col_left, col_right = st.columns([1.8, 1.2])  # ⬅ tighter gap, samples move left
 
     with col_left:
+        st.markdown("### 🧬 Step-by-step guide")
+
         st.markdown("""
-### 🧬 Step-by-step guide
+<div style="padding-left:18px;">
 
 1. **Paste a DNA sequence** (5′ → 3′ direction)  
    - Only use **A, T, C, G**  
@@ -165,7 +167,9 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
    - 🧪 **On-Target Efficiency** → how well Cas9 cuts
    - 🧪 **Off-Target Risk** → unintended binding likelihood
    - 🎥 **3D View** → DNA unwinding + gRNA-Cas9 binding
-""")
+
+</div>
+""", unsafe_allow_html=True)
 
     with col_right:
         st.markdown("### 📌 Sample DNA sequences")
