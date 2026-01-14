@@ -397,7 +397,6 @@ for (let i = 0; i < dnaSeq.length; i++) {{
         geo,
         new THREE.MeshStandardMaterial({{
             color: colorBase(base1),
-            transparent: true,
             opacity: 0.45
         }})
     );
@@ -406,7 +405,6 @@ for (let i = 0; i < dnaSeq.length; i++) {{
         geo,
         new THREE.MeshStandardMaterial({{
             color: colorBase(base2),
-            transparent: true,
             opacity: 0.45
         }})
     );
