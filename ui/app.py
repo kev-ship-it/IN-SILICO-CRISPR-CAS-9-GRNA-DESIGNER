@@ -329,14 +329,15 @@ function colorBase(b) {{
     return {{
         // DNA bases
         A: 0x3CB371,  // green (Adenine)
-        T: 0x1E90FF,  // blue (Thymine)
+        T: 0x800000,  // maroon (Thymine)
         C: 0xF4D03F,  // yellow (Cytosine)
-        G: 0x9B59B6,  // purple (Guanine)
+        G: 0x008080,  // teal (Guanine)
 
         // RNA base
         U: 0xFF9F1C   // orange (Uracil)
     }}[b];
 }}
+
 
 function makeLabel(text, color="#ffffff") {{
     const canvas = document.createElement("canvas");
