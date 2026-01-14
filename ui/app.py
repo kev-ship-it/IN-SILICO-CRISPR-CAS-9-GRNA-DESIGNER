@@ -11,29 +11,29 @@ from pipeline.design_grna import design_best_grna
 # PAGE CONFIG
 # =========================================================
 st.set_page_config(
-page_title="CRISPR-ML Studio",
-page_icon="🧬",
-layout="wide"
+    page_title="CRISPR-ML Studio",
+    page_icon="🧬",
+    layout="wide"
 )
 
 # =========================================================
 # OFF-TARGET RISK INTERPRETATION (ADDED)
 # =========================================================
 def off_target_risk_label(score):
-if score < 0.20:
-return "LOW", "🟢", "#00ff99"
-elif score < 0.50:
-return "MEDIUM", "🟡", "#ffd166"
-else:
-return "HIGH", "🔴", "#ff4e50"
+    if score < 0.20:
+        return "LOW", "🟢", "#00ff99"
+    elif score < 0.50:
+        return "MEDIUM", "🟡", "#ffd166"
+    else:
+        return "HIGH", "🔴", "#ff4e50"
 
 def on_target_risk_label(score):
-if score < 0.20:
-return "LOW", "🔴", "#ff4e50"
-elif score < 0.50:
-return "MEDIUM", "🟡", "#ffd166"
-else:
-return "HIGH", "🟢", "#00ff99"
+    if score < 0.20:
+        return "LOW", "🔴", "#ff4e50"
+    elif score < 0.50:
+        return "MEDIUM", "🟡", "#ffd166"
+    else:
+        return "HIGH", "🟢", "#00ff99"
 
 # =========================================================
 # CSS – DYNAMIC COLOR GRADIENT BACKGROUND
@@ -123,18 +123,18 @@ unsafe_allow_html=True
 # INPUT
 # =========================================================
 dna_sequence = st.text_area(
-"Input DNA sequence (5′ → 3′)",
-height=120,
-placeholder="ATGCGTACGATCGATCGATCGATCGATCGATCG"
+    "Input DNA sequence (5′ → 3′)",
+    height=120,
+    placeholder="ATGCGTACGATCGATCGATCGATCGATCGATCG"
 ).upper().strip()
 
 cas9_option = st.selectbox(
-"Select Cas9 Protein",
-[
-"SpCas9 (NGG)",
-"SaCas9 (NNGRRT)",
-"StCas9 (NNAGAAW)"
-]
+    "Select Cas9 Protein",
+    [
+        "SpCas9 (NGG)",
+        "SaCas9 (NNGRRT)",
+        "StCas9 (NNAGAAW)"
+    ]
 )
 
 run_btn = st.button("🚀 Run CRISPR Simulation")
@@ -143,18 +143,15 @@ st.markdown('</div>', unsafe_allow_html=True)
 # =========================================================
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
-# =========================================================
-# HOW TO USE – BIO PRIMER + INSTRUCTIONS + SAMPLE INPUTS
-# =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
 
-colA, colB, colC = st.columns([1.4, 1, 1.1])
+    colA, colB, colC = st.columns([1.4, 1, 1.1])
 
-# =========================
-# COLUMN 1 — BIOLOGY PRIMER
-# =========================
-with colA:
-st.markdown("""
+    # =========================
+    # COLUMN 1 — BIOLOGY PRIMER
+    # =========================
+    with colA:
+        st.markdown("""
 ### 🧠 Biology primer
 
 **->  DNA (Deoxyribonucleic Acid)**  
@@ -174,12 +171,11 @@ It binds, unwinds DNA, and creates a precise cut.
 💡 This tool visualizes PAM recognition, DNA unwinding, and Cas9–gRNA binding.
 """)
 
-
-# =========================
-# COLUMN 2 — STEP GUIDE
-# =========================
-with colB:
-st.markdown("""
+    # =========================
+    # COLUMN 2 — STEP GUIDE
+    # =========================
+    with colB:
+        st.markdown("""
 ### 🧬 Step-by-step guide
 
 **1. Paste a DNA sequence (5′ → 3′)**  
@@ -199,58 +195,57 @@ st.markdown("""
 • 🎥 3D View → molecular mechanism
 """)
 
-# =========================
-# COLUMN 3 — SAMPLE INPUTS
-# =========================
-with colC:
-st.markdown("### 📌 Sample DNA sequences")
+    # =========================
+    # COLUMN 3 — SAMPLE INPUTS
+    # =========================
+    with colC:
+        st.markdown("### 📌 Sample DNA sequences")
 
-st.code(
-"ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
-language="text"
-)
-st.caption("✅ Works with **SpCas9 (NGG PAM)**")
+        st.code(
+            "ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
+            language="text"
+        )
+        st.caption("✅ Works with **SpCas9 (NGG PAM)**")
 
-st.code(
-"GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
-language="text"
-)
-st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
+        st.code(
+            "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
+            language="text"
+        )
+        st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
 
-st.code(
-"ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
-language="text"
-)
-st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
-
+        st.code(
+            "ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
+            language="text"
+        )
+        st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
 
 # =========================================================
 # RUN PIPELINE
 # =========================================================
 if run_btn:
-result = design_best_grna(dna_sequence, cas9_type=cas9_option)
+    result = design_best_grna(dna_sequence, cas9_type=cas9_option)
 
-if result is None:
-st.error(f"❌ No valid PAM sites detected for {cas9_option}")
-st.stop()
+    if result is None:
+        st.error(f"❌ No valid PAM sites detected for {cas9_option}")
+        st.stop()
 
-risk_label, risk_icon, risk_color = off_target_risk_label(result["off"])
-eff_label, eff_icon, eff_color = on_target_risk_label(result["on"])
-gRNA = result["seq"].replace("T", "U")  # convert T → U for display only
-start = result["start"]
-end = result["end"]
+    risk_label, risk_icon, risk_color = off_target_risk_label(result["off"])
+    eff_label, eff_icon, eff_color = on_target_risk_label(result["on"])
+    gRNA = result["seq"].replace("T", "U")  # convert T → U for display only
+    start = result["start"]
+    end = result["end"]
 
-col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 2])
 
-# =====================================================
-# LEFT: METRICS
-# =====================================================
-with col1:
-st.markdown(f'<div class="card"><center>Target site: {start} → {end}</center></div>', unsafe_allow_html=True)
-st.subheader("📊 ML Prediction")
+    # =====================================================
+    # LEFT: METRICS
+    # =====================================================
+    with col1:
+        st.markdown(f'<div class="card"><center>Target site: {start} → {end}</center></div>', unsafe_allow_html=True)
+        st.subheader("📊 ML Prediction")
 
-st.markdown(
-f"""
+        st.markdown(
+            f"""
        <div class="card" style="text-align:center;">
            <h3>🧪On-Target Efficiency (%)</h3>
            <h1 style="color:{eff_color}; font-size:42px;">
@@ -261,11 +256,11 @@ f"""
            </p>
        </div>
        """,
-unsafe_allow_html=True
-)
+            unsafe_allow_html=True
+        )
 
-st.markdown(
-f"""
+        st.markdown(
+            f"""
        <div class="card" style="text-align:center;">
            <h3>🧪 Off-Target Risk</h3>
            <h1 style="color:{risk_color}; font-size:42px;">
@@ -276,18 +271,18 @@ f"""
            </p>
        </div>
        """,
-unsafe_allow_html=True
-)
-st.markdown('</div>', unsafe_allow_html=True)
+            unsafe_allow_html=True
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
 
-# =====================================================
-# RIGHT: 3D MOLECULAR SIMULATION  
-# =====================================================
-with col2:
-st.markdown(f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br><center>gRNA sequence : {gRNA}</center></div>', unsafe_allow_html=True)
-st.subheader("🎥 Molecular Mechanism Simulation")
+    # =====================================================
+    # RIGHT: 3D MOLECULAR SIMULATION  
+    # =====================================================
+    with col2:
+        st.markdown(f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br><center>gRNA sequence : {gRNA}</center></div>', unsafe_allow_html=True)
+        st.subheader("🎥 Molecular Mechanism Simulation")
 
-html = f"""
+       html = f"""
        <div id="dna-sim" style="width:100%; height:520px;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
        <script>
@@ -680,8 +675,8 @@ animate();
 
 </script>
 """
-components.html(html, height=520)
-st.markdown('</div>', unsafe_allow_html=True)
+        components.html(html, height=520)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
 # FOOTER
