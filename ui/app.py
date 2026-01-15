@@ -256,25 +256,6 @@ if run_btn:
                     Score: {result["on"]*100:.3f}
                 </p>
             </div>
-            <button onclick="zoomIn()" style="
-      padding:8px 14px;
-      border-radius:10px;
-      border:none;
-      font-weight:600;
-      cursor:pointer;
-      background:#00ffcc;">
-    ➕ Zoom In
-  </button>
-
-  <button onclick="zoomOut()" style="
-      padding:8px 14px;
-      border-radius:10px;
-      border:none;
-      font-weight:600;
-      cursor:pointer;
-      background:#ff6ec7;">
-    ➖ Zoom Out
-  </button>
             """,
             unsafe_allow_html=True
         )
