@@ -560,7 +560,7 @@ const nativeTitle = makeTitle("Native DNA", "#00ff99");
 nativeTitle.position.set(-18, dnaSeq.length / 2 + 3, 0);
 scene.add(nativeTitle);
 
-const targetTitle = makeTitle("Target DNA (Cas9 Binding)", "#ff6ec7");
+const targetTitle = makeTitle("Cas9 bound DNA", "#ff6ec7");
 targetTitle.position.set(0, dnaSeq.length / 2 + 3, 0);
 scene.add(targetTitle);
 
