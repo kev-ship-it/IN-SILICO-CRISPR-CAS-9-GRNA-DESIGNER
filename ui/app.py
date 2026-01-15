@@ -283,9 +283,13 @@ if run_btn:
         st.subheader("🎥 Molecular Mechanism Simulation")
 
         html = f"""
-       <div id="dna-sim" style="width:100%; height:520px;"></div>
+       <div id="dna-sim" style="
+    width:100%;
+    height:520px;
+    position: relative;
+    overflow: hidden;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-       <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+       <script src="https://unpkg.com/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
        <script>
 const dnaSeq = "{dna_sequence}";
 const grnaSeq = "{gRNA}";
@@ -310,6 +314,18 @@ camera.lookAt(0, 0, 0);
 const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
+function resizeRenderer() {
+    const w = container.clientWidth;
+    const h = container.clientHeight || 520;
+
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+}
+
+resizeRenderer();
+window.addEventListener("resize", resizeRenderer);
+
 // ====================== ORBIT CONTROLS (ZOOM / ROTATE) ======================
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
