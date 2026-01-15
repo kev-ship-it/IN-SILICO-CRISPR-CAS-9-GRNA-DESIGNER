@@ -674,16 +674,17 @@ if (unwind > 0.9 && bind < 1) {{
    );
 
    // CAMERA: center BOTH native + target DNA
-   const centerX = -9; // midpoint between native (-18) and target (0)
+   //const centerX = -9; // midpoint between native (-18) and target (0)
 
-   camera.position.z += (28 - camera.position.z) * 0.06;
-   camera.position.y += (bindY - camera.position.y) * 0.06;
-   camera.position.x += (centerX - camera.position.x) * 0.06;
+ // camera.position.z += (28 - camera.position.z) * 0.06;
+   //camera.position.y += (bindY - camera.position.y) * 0.06;
+   //camera.position.x += (centerX - camera.position.x) * 0.06;
 
    camera.lookAt(centerX, bindY, 0);
 
 }}
 
+    controls.update();
 
    renderer.render(scene, camera);
 }}
