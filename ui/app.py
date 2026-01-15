@@ -283,14 +283,38 @@ if run_btn:
         st.subheader("🎥 Molecular Mechanism Simulation")
 
         html = f"""
-       <div id="dna-sim" style="
+       <!-- ================= ZOOM BUTTONS ================= -->
+<div style="display:flex; gap:12px; margin-bottom:8px;">
+  <button onclick="zoomIn()" style="
+      padding:8px 14px;
+      border-radius:10px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      background:#00ffcc;">
+    ➕ Zoom In
+  </button>
+
+  <button onclick="zoomOut()" style="
+      padding:8px 14px;
+      border-radius:10px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      background:#ff6ec7;">
+    ➖ Zoom Out
+  </button>
+</div>
+
+<div id="dna-sim" style="
     width:100%;
     height:520px;
     position: relative;
     overflow: hidden;"></div>
-       <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-       <script src="https://unpkg.com/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
-       <script>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<script>
 const dnaSeq = "{dna_sequence}";
 const grnaSeq = "{gRNA}";
 const targetStart = {start};
@@ -308,16 +332,31 @@ const camera = new THREE.PerspectiveCamera(
    0.1,
    1000
 );
-camera.position.set(0, 0, 60);
+
+let zoomLevel = 60;                 // ⭐ ADDED
+const ZOOM_MIN = 18;
+const ZOOM_MAX = 120;
+
+camera.position.set(0, 0, zoomLevel);
 camera.lookAt(0, 0, 0);
 
-const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
+function zoomIn() {{                // ⭐ ADDED
+    zoomLevel = Math.max(ZOOM_MIN, zoomLevel - 5);
+    camera.position.z = zoomLevel;
+}}
+
+function zoomOut() {{               // ⭐ ADDED
+    zoomLevel = Math.min(ZOOM_MAX, zoomLevel + 5);
+    camera.position.z = zoomLevel;
+}}
+
+const renderer = new THREE.WebGLRenderer({{ antialias: true, alpha: true }});
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
+
 function resizeRenderer() {{
     const w = container.clientWidth;
     const h = container.clientHeight || 520;
-
     renderer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
@@ -326,23 +365,8 @@ function resizeRenderer() {{
 resizeRenderer();
 window.addEventListener("resize", resizeRenderer);
 
-// ====================== ORBIT CONTROLS (ZOOM / ROTATE) ======================
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-controls.enableZoom = true;        // mouse scroll zoom
-controls.enableRotate = true;      // drag rotate
-controls.enablePan = false;        // keep centered
-
-controls.minDistance = 15;         // closest zoom
-controls.maxDistance = 120;        // farthest zoom
-
-controls.zoomSpeed = 1.2;          // scroll sensitivity
-controls.rotateSpeed = 0.8;
-
-controls.target.set(0, 0, 0);
-controls.update();
-
-
+// ====================== LIGHTS ======================
 scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
 dirLight.position.set(20, 30, 50);
@@ -355,36 +379,29 @@ function complement(b) {{
 
 function colorBase(b) {{
    return {{
-       // DNA bases
-       A: 0x3CB371,  // green (Adenine)
-       T: 0x800000,  // maroon (Thymine)
-       C: 0xF4D03F,  // yellow (Cytosine)
-       G: 0x008080,  // teal (Guanine)
-
-       // RNA base
-       U: 0xFF9F1C   // orange (Uracil)
+       A: 0x3CB371,
+       T: 0x800000,
+       C: 0xF4D03F,
+       G: 0x008080,
+       U: 0xFF9F1C
    }}[b];
 }}
-
 
 function makeLabel(text, color="#ffffff") {{
    const canvas = document.createElement("canvas");
    canvas.width = 128;
    canvas.height = 128;
    const ctx = canvas.getContext("2d");
-
    ctx.fillStyle = color;
    ctx.font = "bold 64px Arial";
    ctx.textAlign = "center";
    ctx.textBaseline = "middle";
    ctx.fillText(text, 64, 64);
-
    const texture = new THREE.CanvasTexture(canvas);
    return new THREE.Sprite(
        new THREE.SpriteMaterial({{ map: texture, transparent: true }})
    );
 }}
-
 
 function makeTitle(text, color="#00ffcc") {{
    const canvas = document.createElement("canvas");
@@ -632,70 +649,29 @@ const bindY = (targetStart + targetEnd) / 2 - dnaSeq.length / 2;
 function animate() {{
    requestAnimationFrame(animate);
 
-   // gentle global motion
    strandA.rotation.y += 0.005;
    strandB.rotation.y += 0.005;
-
-   // keep native DNA always helical
    refStrandA.rotation.y += 0.005;
    refStrandB.rotation.y += 0.005;
 
-
-   // ===============================
-   // Phase 1: Helix → straight + separated strands
-   // ===============================
    if (unwind < 1) {{
        unwind += 0.01;
-
-       strandA.children.forEach((b, i) => {{
-               b.position.x = THREE.MathUtils.lerp(b.position.x, -3.5, 0.08);
-               b.position.z *= 0.90;
+       strandA.children.forEach(b => {{
+           b.position.x = THREE.MathUtils.lerp(b.position.x, -3.5, 0.08);
+           b.position.z *= 0.90;
        }});
-
-       strandB.children.forEach((b, i) => {{
-               b.position.x = THREE.MathUtils.lerp(b.position.x, 3.5, 0.08);
-               b.position.z *= 0.90;
+       strandB.children.forEach(b => {{
+           b.position.x = THREE.MathUtils.lerp(b.position.x, 3.5, 0.08);
+           b.position.z *= 0.90;
        }});
    }}
 
-  // ===============================
-// Phase 2: gRNA inserts BETWEEN separated strands (FULL LENGTH)
-// ===============================
-if (unwind > 0.9 && bind < 1) {{
-   cas9.material.emissiveIntensity = 0.3 + bind * 0.7;
-   bind += 0.015;
-
-   let ntIndex = 0; // real nucleotide counter (ignores "-" sprites)
-
-   grnaGroup.children.forEach((obj) => {{
-       // only move nucleotide casings (they have geometry + children)
-       if (!obj.geometry) return;
-
-       const dnaIndex = targetStart + ntIndex;
-       if (dnaIndex >= targetEnd) return;
-
-       const y = dnaIndex - dnaSeq.length / 2;
-
-       obj.position.x += (0 - obj.position.x) * 0.15;
-       obj.position.y += (y - obj.position.y) * 0.15;
-       obj.position.z += (0 - obj.position.z) * 0.15;
-
-       ntIndex++; // advance ONLY when a nucleotide is placed
-   }});
-
-   cas9.scale.set(
-       1 - bind * 0.45,
-       1 - bind * 0.30,
-       1 - bind * 0.45
-   );
-}}
-
-    controls.update();
-
+   controls.update();
    renderer.render(scene, camera);
 }}
 
 animate();
+</script
 
 </script>
 """
