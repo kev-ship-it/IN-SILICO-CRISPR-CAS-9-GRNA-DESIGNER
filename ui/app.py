@@ -286,9 +286,9 @@ if run_btn:
         )
         st.subheader("🎥 Molecular Mechanism Simulation")
 
-        html = f"""
+        html= f"""
     <!-- ================= ZOOM BUTTONS ================= -->
-<div style="display:flex; gap:12px; margin-bottom:8px;">
+<div style="display:flex; gap:12px; margin-bottom:8px;"></div>
   <button onclick="zoomIn()" style="
       padding:8px 14px;
       border-radius:10px;
@@ -308,7 +308,6 @@ if run_btn:
       background:#ff6ec7;">
     ➖ Zoom Out
   </button>
-</div>
       <div id="dna-sim" style="width:100%; height:520px;"></div>
       <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
       <script>
