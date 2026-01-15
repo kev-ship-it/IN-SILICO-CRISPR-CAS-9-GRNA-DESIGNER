@@ -325,7 +325,7 @@ if run_btn:
     ">⬇️ Camera Down</button>
     
 </div>
-       <div id="dna-sim" style="width:100%; height:420px;"></div>
+       <div id="dna-sim" style="width:100%; height:520px;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
        <script>
 const dnaSeq = "{dna_sequence}";
