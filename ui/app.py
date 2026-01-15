@@ -314,14 +314,14 @@ camera.lookAt(0, 0, 0);
 const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
-function resizeRenderer() {
+function resizeRenderer() {{
     const w = container.clientWidth;
     const h = container.clientHeight || 520;
 
     renderer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-}
+}}
 
 resizeRenderer();
 window.addEventListener("resize", resizeRenderer);
