@@ -285,6 +285,27 @@ if run_btn:
         )
         st.subheader("🎥 Molecular Mechanism Simulation")
         html = f"""
+        <div style="display:flex; gap:12px; margin-bottom:10px;">
+    <button onclick="zoomIn()" style="
+        padding:8px 14px;
+        font-size:16px;
+        border-radius:8px;
+        border:none;
+        cursor:pointer;
+        background:#00ffcc;
+        font-weight:600;
+    ">➕ Zoom In</button>
+
+    <button onclick="zoomOut()" style="
+        padding:8px 14px;
+        font-size:16px;
+        border-radius:8px;
+        border:none;
+        cursor:pointer;
+        background:#ff6ec7;
+        font-weight:600;
+    ">➖ Zoom Out</button>
+</div>
        <div id="dna-sim" style="width:100%; height:420px;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
        <script>
@@ -305,8 +326,22 @@ const camera = new THREE.PerspectiveCamera(
    0.1,
    1000
 );
-camera.position.set(0, 0, 60);
+let zoomLevel = 60;                 // ⭐ ADDED
+const ZOOM_MIN = 18;
+const ZOOM_MAX = 120;
+
+camera.position.set(0, 0, zoomLevel);
 camera.lookAt(0, 0, 0);
+
+function zoomIn() {{                // ⭐ ADDED
+    zoomLevel = Math.max(ZOOM_MIN, zoomLevel - 5);
+    camera.position.z = zoomLevel;
+}}
+
+function zoomOut() {{               // ⭐ ADDED
+    zoomLevel = Math.min(ZOOM_MAX, zoomLevel + 5);
+    camera.position.z = zoomLevel;
+}}
 
 const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
 renderer.setSize(container.clientWidth, container.clientHeight);
@@ -370,6 +405,16 @@ function makeTitle(text, color="#00ffcc") {{
    sprite.scale.set(12, 3, 1);
    return sprite;
 }}
+function zoomIn() {{
+    zoomLevel = Math.max(ZOOM_MIN, zoomLevel - 5);
+    camera.position.z = zoomLevel;
+}}
+
+function zoomOut() {{
+    zoomLevel = Math.min(ZOOM_MAX, zoomLevel + 5);
+    camera.position.z = zoomLevel;
+}}
+
 
 // ====================== REFERENCE (NATIVE) DNA ======================
 const refStrandA = new THREE.Group();
