@@ -650,6 +650,7 @@ function animate() {{
 }}
 
 animate();
+</script>
 <button onclick="zoomIn()" style="
       padding:8px 14px;
       border-radius:10px;
@@ -669,7 +670,6 @@ animate();
       background:#ff6ec7;">
     ➖ Zoom Out
   </button>
-</script>
 """
     components.html(html, height=520)
 # =========================================================
