@@ -286,7 +286,7 @@ if run_btn:
         )
         st.subheader("🎥 Molecular Mechanism Simulation")
 
-    html = f"""
+        html = f"""
     <!-- ================= ZOOM BUTTONS ================= -->
 <div style="display:flex; gap:12px; margin-bottom:8px;">
   <button onclick="zoomIn()" style="
