@@ -343,9 +343,6 @@ let zoomLevel = 60;                 // ⭐ ADDED
 const ZOOM_MIN = 18;
 const ZOOM_MAX = 120;
 
-camera.position.set(0, 0, zoomLevel);
-camera.lookAt(0, 0, 0);
-
 function zoomIn() {{                // ⭐ ADDED
     zoomLevel = Math.max(ZOOM_MIN, zoomLevel - 5);
     camera.position.z = zoomLevel;
