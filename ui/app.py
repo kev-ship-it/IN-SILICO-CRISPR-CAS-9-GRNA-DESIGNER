@@ -287,7 +287,7 @@ if run_btn:
             unsafe_allow_html=True
         )
         st.subheader("🎥 Molecular Mechanism Simulation")
-       html = f"""
+        html = f"""
        <div id="dna-sim" style="width:100%; height:520px;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
        <script>
