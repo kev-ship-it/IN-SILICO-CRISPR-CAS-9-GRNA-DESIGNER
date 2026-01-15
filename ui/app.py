@@ -304,7 +304,26 @@ if run_btn:
         cursor:pointer;
         background:#ff6ec7;
         font-weight:600;
-    ">➖ Zoom Out</button>
+    ">➖ Zoom Out</button><button onclick="camUp()" style="
+        padding:8px 14px;
+        font-size:16px;
+        border-radius:8px;
+        border:none;
+        cursor:pointer;
+        background:#00ffcc;
+        font-weight:600;
+    ">⬆️ Camera Up</button>
+
+    <button onclick="camDown()" style="
+        padding:8px 14px;
+        font-size:16px;
+        border-radius:8px;
+        border:none;
+        cursor:pointer;
+        background:#ff6ec7;
+        font-weight:600;
+    ">⬇️ Camera Down</button>
+    
 </div>
        <div id="dna-sim" style="width:100%; height:420px;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
@@ -341,6 +360,13 @@ function zoomIn() {{                // ⭐ ADDED
 function zoomOut() {{               // ⭐ ADDED
     zoomLevel = Math.min(ZOOM_MAX, zoomLevel + 5);
     camera.position.z = zoomLevel;
+}}
+function camUp() {{
+    camera.position.y += 2;   // literal JS braces must be doubled
+}}
+
+function camDown() {{
+    camera.position.y -= 2;
 }}
 
 const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
