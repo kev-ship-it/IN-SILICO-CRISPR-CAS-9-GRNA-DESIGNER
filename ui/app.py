@@ -288,25 +288,6 @@ if run_btn:
         )
         st.subheader("🎥 Molecular Mechanism Simulation")
         html = f"""
-  <button onclick="zoomIn()" style="
-      padding:8px 14px;
-      border-radius:10px;
-      border:none;
-      font-weight:600;
-      cursor:pointer;
-      background:#00ffcc;">
-    ➕ Zoom In
-  </button>
-
-  <button onclick="zoomOut()" style="
-      padding:8px 14px;
-      border-radius:10px;
-      border:none;
-      font-weight:600;
-      cursor:pointer;
-      background:#ff6ec7;">
-    ➖ Zoom Out
-  </button>
 <div id="dna-sim" style="width:100%; height:520px;"></div>
 <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
 <script>
@@ -669,6 +650,25 @@ function animate() {{
 }}
 
 animate();
+<button onclick="zoomIn()" style="
+      padding:8px 14px;
+      border-radius:10px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      background:#00ffcc;">
+    ➕ Zoom In
+  </button>
+
+  <button onclick="zoomOut()" style="
+      padding:8px 14px;
+      border-radius:10px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      background:#ff6ec7;">
+    ➖ Zoom Out
+  </button>
 </script>
 """
     components.html(html, height=520)
