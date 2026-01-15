@@ -285,6 +285,7 @@ if run_btn:
         html = f"""
        <div id="dna-sim" style="width:100%; height:520px;"></div>
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
        <script>
 const dnaSeq = "{dna_sequence}";
 const grnaSeq = "{gRNA}";
@@ -309,6 +310,22 @@ camera.lookAt(0, 0, 0);
 const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
+// ====================== ORBIT CONTROLS (ZOOM / ROTATE) ======================
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+controls.enableZoom = true;        // mouse scroll zoom
+controls.enableRotate = true;      // drag rotate
+controls.enablePan = false;        // keep centered
+
+controls.minDistance = 15;         // closest zoom
+controls.maxDistance = 120;        // farthest zoom
+
+controls.zoomSpeed = 1.2;          // scroll sensitivity
+controls.rotateSpeed = 0.8;
+
+controls.target.set(0, 0, 0);
+controls.update();
+
 
 scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
