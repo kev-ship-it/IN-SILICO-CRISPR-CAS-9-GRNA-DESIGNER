@@ -140,7 +140,6 @@ cas9_option = st.selectbox(
 )
 
 run_btn = st.button("🚀 Run CRISPR Simulation")
-st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================================
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
@@ -274,8 +273,6 @@ if run_btn:
             """,
             unsafe_allow_html=True
         )
-
-        st.markdown('</div>', unsafe_allow_html=True)
 
     # =====================================================
     # RIGHT: 3D MOLECULAR SIMULATION  
