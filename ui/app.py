@@ -148,11 +148,26 @@ if dna_sequence:
 
 # ⭐ 6a — Disable if empty
 run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
+# =========================
+    # COLUMN 3 — SAMPLE INPUTS
+    # =========================
+st.markdown("### 📌 Sample DNA sequences")
+
+st.code("ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",language="text")
+st.caption("✅ Works with **SpCas9 (NGG PAM)**")
+st.code(
+            "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
+            language="text")
+st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
+
+st.code("ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
+            language="text")
+st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
 # =========================================================
-# HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
+# HOW TO USE – USER GUIDANCE
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
-    colA, colB, colC = st.columns([1.4, 1, 1.6])
+    colA, colB = st.columns([1.4, 1.6])
 
     # =========================
     # COLUMN 1 — BIOLOGY PRIMER
@@ -201,30 +216,6 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
         • 🧪 Off-Target → unintended binding  
         • 🎥 3D View → molecular mechanism
         """)
-
-    # =========================
-    # COLUMN 3 — SAMPLE INPUTS
-    # =========================
-    with colC:
-        st.markdown("### 📌 Sample DNA sequences")
-
-        st.code(
-            "ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",
-            language="text"
-        )
-        st.caption("✅ Works with **SpCas9 (NGG PAM)**")
-
-        st.code(
-            "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
-            language="text"
-        )
-        st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
-
-        st.code(
-            "ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
-            language="text"
-        )
-        st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
 
 # =========================================================
 # RUN PIPELINE
