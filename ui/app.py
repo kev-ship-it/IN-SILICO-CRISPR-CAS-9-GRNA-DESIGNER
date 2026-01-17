@@ -167,7 +167,6 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
         st.image(
         "crispr_simulation_steps.png",
         caption="CRISPR Simulation Process Overview",
-        use_container_width=True
     )
 
 
