@@ -262,7 +262,7 @@ if run_btn:
     with col2:
         st.markdown(
             f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br>'
-            f'<center>gRNA sequence : {gRNA}</center>
+            f"""<center>gRNA sequence : {gRNA}</center>
             <button onclick="copyGRNA()" style="
                         margin-top:10px;
                         padding:8px 14px;
@@ -276,7 +276,7 @@ if run_btn:
                     ">
                     📋 Copy gRNA
                     </button>
-                    </div>',
+                    </div>""",
             unsafe_allow_html=True
         )
         
