@@ -64,16 +64,6 @@ st.markdown(
       text-align: center;
     }
 
-    .card {
-      background: linear-gradient(135deg, #0d1b8f, #1dd3b0, #6a11cb, #00ff99)  !important;
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 24px;
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 10px 35px rgba(0,0,0,0.4);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 15px 45px rgba(0,255,255,0.3);
@@ -85,16 +75,20 @@ st.markdown(
       border-radius: 12px !important;
       border: 1px solid rgba(255,255,255,0.25) !important;
     }
+.card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
 
-    button {
-      background: linear-gradient(135deg, #00ffff, #ff00ff) !important;
-      color: #001018 !important;
-      font-weight: 700 !important;
-      border-radius: 16px !important;
-      padding: 10px 25px !important;
-      box-shadow: 0 8px 25px rgba(0,255,255,0.4);
-    }
-
+button {
+  background: linear-gradient(135deg, #1f6fff, #ff7a18) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+}
     button:hover {
       transform: scale(1.06);
     }
@@ -131,6 +125,14 @@ dna_sequence = st.text_area(
     placeholder="ATGCGTACGATCGATCGATCGATCGATCGATCG"
 ).upper().strip()
 
+# ⭐ 1a,1b,1c — Sequence summary
+if dna_sequence:
+    gc = (dna_sequence.count("G") + dna_sequence.count("C")) / len(dna_sequence) * 100
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Sequence Length", f"{len(dna_sequence)} nt")
+    c2.metric("GC Content", f"{gc:.1f}%")
+    c3.metric("Cas Variant", cas9_option.split()[0])
+
 cas9_option = st.selectbox(
     "Select Cas9 Protein",
     [
@@ -140,8 +142,8 @@ cas9_option = st.selectbox(
     ]
 )
 
-run_btn = st.button("🚀 Run CRISPR Simulation")
-
+# ⭐ 6a — Disable if empty
+run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
 # =========================================================
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
@@ -223,7 +225,8 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
 # =========================================================
 # RUN PIPELINE
 # =========================================================
-if run_btn:
+# ⭐ 6b — Spinner
+with st.spinner("Running ML inference and molecular simulation..."):
     result = design_best_grna(dna_sequence, cas9_type=cas9_option)
 
     if result is None:
@@ -235,6 +238,11 @@ if run_btn:
     gRNA = result["seq"].replace("T", "U")  # convert T → U for display only
     start = result["start"]
     end = result["end"]
+    # ⭐ 6c — gRNA display + copy button
+    st.markdown("### 🧬 gRNA Sequence")
+    st.code(gRNA, language="text")
+    st.button("📋 Copy gRNA")
+
 
     col1, col2 = st.columns([1, 2])
 
@@ -245,30 +253,24 @@ if run_btn:
         st.markdown(f'<div class="card"><center>Target site: {start} → {end}</center></div>', unsafe_allow_html=True)
         st.subheader("📊 ML Prediction")
 
-        st.markdown(
-            f"""
-            <div class="card" style="text-align:center;">
-                <h3>🧪On-Target Efficiency (%)</h3>
-                <h1 style="color:{eff_color}; font-size:42px;">
-                    {eff_icon} {eff_label}
-                </h1>
-                <p style="opacity:0.8;">
-                    Score: {result["on"]*100:.3f}
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True
+      st.markdown(f"""
+<div class="card" style="text-align:center;">
+  <h3>On-Target Efficiency</h3>
+  <h1 style="color:{eff_color};">{eff_icon} {eff_label}</h1>
+  <p>{result["on"]*100:.2f}%</p>
+</div>
+""", unsafe_allow_html=True)
+
         )
 
         st.markdown(
             f"""
-            <div class="card" style="text-align:center;">
-                <h3>🧪 Off-Target Risk</h3>
+           <div class="card" style="text-align:center;">
+              <h3>On-Target Efficiency</h3>
                 <h1 style="color:{risk_color}; font-size:42px;">
                     {risk_icon} {risk_label}
                 </h1>
-                <p style="opacity:0.8;">
-                    Score: {result["off"]*100:.3f}
+                <p> Score: {result["off"]*100:.3f}
                 </p>
             </div>
             """,
