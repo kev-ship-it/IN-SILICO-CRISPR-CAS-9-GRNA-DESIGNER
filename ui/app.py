@@ -142,9 +142,31 @@ cas9_option = st.selectbox(
 if dna_sequence:
     gc = (dna_sequence.count("G") + dna_sequence.count("C")) / len(dna_sequence) * 100
     c1, c2, c3 = st.columns(3)
-    c1.metric("Sequence Length", f"{len(dna_sequence)} nt")
-    c2.metric("GC Content", f"{gc:.1f}%")
-    c3.metric("Cas Variant", cas9_option.split()[0])
+
+with c1:
+    st.markdown(f"""
+    <div class="card" style="text-align:center;">
+        <h3>Sequence Length</h3>
+        <h1>{len(dna_sequence)} nt</h1>
+    </div>
+    """, unsafe_allow_html=True)
+
+with c2:
+    st.markdown(f"""
+    <div class="card" style="text-align:center;">
+        <h3>GC Content</h3>
+        <h1>{gc:.1f}%</h1>
+    </div>
+    """, unsafe_allow_html=True)
+
+with c3:
+    st.markdown(f"""
+    <div class="card" style="text-align:center;">
+        <h3>Cas Variant</h3>
+        <h1>{cas9_option.split()[0]}</h1>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 # ⭐ 6a — Disable if empty
 run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
