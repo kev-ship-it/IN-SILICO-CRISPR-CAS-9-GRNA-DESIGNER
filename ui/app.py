@@ -190,8 +190,9 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
 # RUN PIPELINE
 # =========================================================
 # ⭐ 6b — Spinner
-with st.spinner("Running ML inference and molecular simulation..."):
-    result = design_best_grna(dna_sequence, cas9_type=cas9_option)
+if run_btn:
+    with st.spinner("Running ML inference and molecular simulation..."):
+        result = design_best_grna(dna_sequence, cas9_type=cas9_option)
 
     if result is None:
         st.error(f"❌ No valid PAM sites detected for {cas9_option}")
