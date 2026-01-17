@@ -260,26 +260,6 @@ if run_btn:
     # RIGHT: 3D MOLECULAR SIMULATION  
     # =====================================================
     with col2:
-        st.markdown(
-            f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br>'
-            f"""<center>gRNA sequence : {gRNA}</center>
-            <button onclick="copyGRNA()" style="
-                        margin-top:10px;
-                        padding:8px 14px;
-                        font-size:14px;
-                        border-radius:10px;
-                        border:none;
-                        cursor:pointer;
-                        background:#1f6fff;
-                        color:white;
-                        font-weight:600;
-                    ">
-                    📋 Copy gRNA
-                    </button>
-                    </div>""",
-            unsafe_allow_html=True
-        )
-        
         st.subheader("🎥 Molecular Mechanism Simulation")
         html = f"""
         <div style="display:flex; gap:12px; margin-bottom:10px;">
@@ -323,6 +303,25 @@ if run_btn:
     
 </div>
        <div id="dna-sim" style="width:100%; height:520px;"></div>
+       <div class="card" style="text-align:center; margin-bottom:12px;">
+    <h3>Cas9 Protein: {cas9_option}</h3>
+    <p><b>gRNA sequence:</b> <span id="grna-text">{gRNA}</span></p>
+
+    <button onclick="copyGRNA()" style="
+        margin-top:10px;
+        padding:8px 16px;
+        font-size:14px;
+        border-radius:10px;
+        border:none;
+        cursor:pointer;
+        background:#1f6fff;
+        color:white;
+        font-weight:600;
+    ">
+        📋 Copy gRNA
+    </button>
+</div>
+
        <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
        <script>
 const dnaSeq = "{dna_sequence}";
