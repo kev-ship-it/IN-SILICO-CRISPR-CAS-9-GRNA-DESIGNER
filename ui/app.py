@@ -30,7 +30,7 @@ def off_target_risk_label(score):
 
 
 def on_target_risk_label(score):
-    if score < 0.40:
+    if score < 0.35:
         return "LOW", "🔴", "#ff4e50"
     elif score < 0.75:
         return "MEDIUM", "🟡", "#ffd166"
