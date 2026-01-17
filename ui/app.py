@@ -75,20 +75,25 @@ st.markdown(
       border-radius: 12px !important;
       border: 1px solid rgba(255,255,255,0.25) !important;
     }
-.card {
-  background: rgba(255,255,255,0.05);
-  border-radius: 14px;
-  padding: 22px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-button {
-  background: linear-gradient(135deg, #1f6fff, #ff7a18) !important;
-  color: white !important;
-  font-weight: 600 !important;
-  border-radius: 14px !important;
-}
+    .card {
+      background: linear-gradient(
+        145deg,
+        rgba(120, 160, 255, 0.18),
+        rgba(180, 190, 255, 0.10)
+      );
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(160, 180, 255, 0.25);
+      backdrop-filter: blur(6px);
+    }
+    
+    button {
+      background: linear-gradient(135deg, #1f6fff, #ff7a18) !important;
+      color: white !important;
+      font-weight: 600 !important;
+      border-radius: 14px !important;
+    }
     button:hover {
       transform: scale(1.06);
     }
@@ -146,7 +151,7 @@ run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
 # =========================================================
 # HOW TO USE – USER GUIDANCE + SAMPLE INPUTS
 # =========================================================
-with st.expander("🧭 How to use this tool (Click to expand)", expanded=True):
+with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
     colA, colB, colC = st.columns([1.4, 1, 1.6])
 
     # =========================
@@ -237,12 +242,6 @@ with st.spinner("Running ML inference and molecular simulation..."):
     gRNA = result["seq"].replace("T", "U")  # convert T → U for display only
     start = result["start"]
     end = result["end"]
-    # ⭐ 6c — gRNA display + copy button
-    st.markdown("### 🧬 gRNA Sequence")
-    st.code(gRNA, language="text")
-    st.button("📋 Copy gRNA")
-
-
     col1, col2 = st.columns([1, 2])
 
     # =====================================================
@@ -283,6 +282,7 @@ with st.spinner("Running ML inference and molecular simulation..."):
             f'<center>gRNA sequence : {gRNA}</center></div>',
             unsafe_allow_html=True
         )
+        st.button("📋 Copy gRNA")
         st.subheader("🎥 Molecular Mechanism Simulation")
         html = f"""
         <div style="display:flex; gap:12px; margin-bottom:10px;">
