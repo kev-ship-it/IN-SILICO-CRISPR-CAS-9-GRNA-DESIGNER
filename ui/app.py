@@ -153,7 +153,7 @@ run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
 # HOW TO USE – USER GUIDANCE
 # =========================================================
 with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
-    colA, colB = st.columns([1.4, 1.6])
+    colA, colB = st.columns([1.4, 1.2])
 
     # =========================
     # COLUMN 1 — BIOLOGY PRIMER
