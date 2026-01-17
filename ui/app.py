@@ -261,8 +261,6 @@ with st.spinner("Running ML inference and molecular simulation..."):
 </div>
 """, unsafe_allow_html=True)
 
-        )
-
         st.markdown(
             f"""
            <div class="card" style="text-align:center;">
