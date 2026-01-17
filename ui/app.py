@@ -20,9 +20,10 @@ st.set_page_config(
 # OFF-TARGET RISK INTERPRETATION (ADDED)
 # =========================================================
 def off_target_risk_label(score):
-    if score < 0.18:
+    n_score=score*100
+    if n_score < 0.18:
         return "LOW", "🟢", "#00ff99"
-    elif (score > 0.18 and score < 0.30) :
+    elif (n_score > 0.18 and n_score < 0.30) :
         return "MEDIUM", "🟡", "#ffd166"
     else:
         return "HIGH", "🔴", "#ff4e50"
