@@ -262,7 +262,21 @@ if run_btn:
     with col2:
         st.markdown(
             f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br>'
-            f'<center>gRNA sequence : {gRNA}</center><button> 📋 Copy gRNA </button></div>',
+            f'<center>gRNA sequence : {gRNA}</center>
+            <button onclick="copyGRNA()" style="
+                        margin-top:10px;
+                        padding:8px 14px;
+                        font-size:14px;
+                        border-radius:10px;
+                        border:none;
+                        cursor:pointer;
+                        background:#1f6fff;
+                        color:white;
+                        font-weight:600;
+                    ">
+                    📋 Copy gRNA
+                    </button>
+                    </div>',
             unsafe_allow_html=True
         )
         
@@ -351,7 +365,15 @@ function camUp() {{
 function camDown() {{
     camera.position.y -= 2;
 }}
-
+function copyGRNA() {{
+    navigator.clipboard.writeText(grnaSeq)
+        .then(() => {{
+            alert("gRNA copied to clipboard 🧬");
+        }})
+        .catch(err => {{
+            alert("Copy failed 😬");
+        }});
+}}
 const renderer = new THREE.WebGLRenderer({{antialias: true, alpha: true}});
 renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
@@ -397,8 +419,6 @@ function makeLabel(text, color="#ffffff") {{
        new THREE.SpriteMaterial({{ map: texture, transparent: true }})
    );
 }}
-
-
 function makeTitle(text, color="#00ffcc") {{
    const canvas = document.createElement("canvas");
    canvas.width = 512;
@@ -423,8 +443,6 @@ function zoomOut() {{
     zoomLevel = Math.min(ZOOM_MAX, zoomLevel + 5);
     camera.position.z = zoomLevel;
 }}
-
-
 // ====================== REFERENCE (NATIVE) DNA ======================
 const refStrandA = new THREE.Group();
 const refStrandB = new THREE.Group();
