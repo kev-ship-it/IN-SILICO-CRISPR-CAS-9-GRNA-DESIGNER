@@ -153,8 +153,7 @@ st.markdown("""
 
     Follow these steps to understand how the simulation works:
     """)
-
-    st.image(
+st.image(
         "crispr_simulation_steps.png",
         caption="CRISPR Simulation Process Overview",
         use_container_width=True
