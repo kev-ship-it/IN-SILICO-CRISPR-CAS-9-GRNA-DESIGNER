@@ -125,14 +125,6 @@ dna_sequence = st.text_area(
     placeholder="ATGCGTACGATCGATCGATCGATCGATCGATCG"
 ).upper().strip()
 
-# ⭐ 1a,1b,1c — Sequence summary
-if dna_sequence:
-    gc = (dna_sequence.count("G") + dna_sequence.count("C")) / len(dna_sequence) * 100
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Sequence Length", f"{len(dna_sequence)} nt")
-    c2.metric("GC Content", f"{gc:.1f}%")
-    c3.metric("Cas Variant", cas9_option.split()[0])
-
 cas9_option = st.selectbox(
     "Select Cas9 Protein",
     [
@@ -141,6 +133,13 @@ cas9_option = st.selectbox(
         "StCas9 (NNAGAAW)"
     ]
 )
+# ⭐ 1a,1b,1c — Sequence summary
+if dna_sequence:
+    gc = (dna_sequence.count("G") + dna_sequence.count("C")) / len(dna_sequence) * 100
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Sequence Length", f"{len(dna_sequence)} nt")
+    c2.metric("GC Content", f"{gc:.1f}%")
+    c3.metric("Cas Variant", cas9_option.split()[0])
 
 # ⭐ 6a — Disable if empty
 run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
