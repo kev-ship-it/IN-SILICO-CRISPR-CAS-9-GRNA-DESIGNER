@@ -253,7 +253,7 @@ with st.spinner("Running ML inference and molecular simulation..."):
         st.markdown(f'<div class="card"><center>Target site: {start} → {end}</center></div>', unsafe_allow_html=True)
         st.subheader("📊 ML Prediction")
 
-      st.markdown(f"""
+        st.markdown(f"""
 <div class="card" style="text-align:center;">
   <h3>On-Target Efficiency</h3>
   <h1 style="color:{eff_color};">{eff_icon} {eff_label}</h1>
