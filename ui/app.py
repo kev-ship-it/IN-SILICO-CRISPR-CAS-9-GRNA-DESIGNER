@@ -22,7 +22,7 @@ st.set_page_config(
 def off_target_risk_label(score):
     if score < 0.18:
         return "LOW", "🟢", "#00ff99"
-    elif (score > 0.18 and score 0.30) :
+    elif (score > 0.18 and score < 0.30) :
         return "MEDIUM", "🟡", "#ffd166"
     else:
         return "HIGH", "🔴", "#ff4e50"
