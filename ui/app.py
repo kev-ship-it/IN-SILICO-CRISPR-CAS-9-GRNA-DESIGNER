@@ -148,21 +148,18 @@ if dna_sequence:
 
 # ⭐ 6a — Disable if empty
 run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
-# =========================
-    # COLUMN 3 — SAMPLE INPUTS
-    # =========================
-st.markdown("### 📌 Sample DNA sequences")
+st.markdown("""
+    **CRISPR Simulation Workflow**
 
-st.code("ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",language="text")
-st.caption("✅ Works with **SpCas9 (NGG PAM)**")
-st.code(
-            "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
-            language="text")
-st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
+    Follow these steps to understand how the simulation works:
+    """)
 
-st.code("ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
-            language="text")
-st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
+    st.image(
+        "crispr_simulation_steps.png",
+        caption="CRISPR Simulation Process Overview",
+        use_container_width=True
+    )
+
 # =========================================================
 # HOW TO USE – USER GUIDANCE
 # =========================================================
@@ -197,26 +194,18 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
     # COLUMN 2 — STEP GUIDE
     # =========================
     with colB:
-        st.markdown("""
-        ### 🧬 Step-by-step guide
+        st.markdown("### 📌 Sample DNA sequences")
 
-        **1. Paste a DNA sequence (5′ → 3′)**  
-        • Use only **A, T, C, G**  
-        • Recommended length: **≥ 40 nt**
+        st.code("ATGCGTACGGATCGATCGGATCCGATCGGATCGATCGTACGATCG",language="text")
+        st.caption("✅ Works with **SpCas9 (NGG PAM)**")
+        st.code(
+            "GCTAGCTAGCTAGGAGGTTACGATCGATCGGATCGATCGATCGATCGA",
+            language="text")
+        st.caption("✅ Compatible with **SaCas9 (NNGRRT PAM)**")
 
-        **2. Select a Cas9 variant**  
-        • **SpCas9** → NGG PAM (most common)  
-        • **SaCas9** → NNGRRT PAM  
-        • **StCas9** → NNAGAAW PAM  
-
-        **3. Click 🚀 Run CRISPR Simulation**
-
-        **4. Interpret results**  
-        • 🧪 On-Target → cutting efficiency  
-        • 🧪 Off-Target → unintended binding  
-        • 🎥 3D View → molecular mechanism
-        """)
-
+        st.code("ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
+            language="text")
+        st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
 # =========================================================
 # RUN PIPELINE
 # =========================================================
