@@ -240,10 +240,11 @@ if run_btn:
     with col2:
         st.markdown(
             f'<div class="card"><center>Cas9 Protein: {cas9_option}</center><br>'
-            f'<center>gRNA sequence : {gRNA}</center></div>',
+            f'<center>gRNA sequence : {gRNA}</center></div>
+            <button> 📋 Copy gRNA </button>',
             unsafe_allow_html=True
         )
-        st.button("📋 Copy gRNA")
+        
         st.subheader("🎥 Molecular Mechanism Simulation")
         html = f"""
         <div style="display:flex; gap:12px; margin-bottom:10px;">
