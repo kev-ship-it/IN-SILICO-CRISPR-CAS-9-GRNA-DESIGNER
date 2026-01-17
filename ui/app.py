@@ -148,16 +148,6 @@ if dna_sequence:
 
 # ⭐ 6a — Disable if empty
 run_btn = st.button("🚀 Run CRISPR Simulation", disabled=not dna_sequence)
-st.markdown("""
-    **CRISPR Simulation Workflow**
-
-    Follow these steps to understand how the simulation works:
-    """)
-st.image(
-        "crispr_simulation_steps.png",
-        caption="CRISPR Simulation Process Overview",
-        use_container_width=True
-    )
 
 # =========================================================
 # HOW TO USE – USER GUIDANCE
@@ -170,24 +160,16 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
     # =========================
     with colA:
         st.markdown("""
-        ### 🧠 Biology primer
+    **CRISPR Simulation Workflow**
 
-        **->  DNA (Deoxyribonucleic Acid)**  
-        Stores genetic information in a double helix using **A, T, C, G**.
+    Follow these steps to understand how the simulation works:
+    """)
+        st.image(
+        "crispr_simulation_steps.png",
+        caption="CRISPR Simulation Process Overview",
+        use_container_width=True
+    )
 
-        **->  RNA (Ribonucleic Acid)**  
-        Single-stranded copy of DNA.  
-        CRISPR uses **guide RNA (gRNA)** to recognize targets.
-
-        **->  CRISPR**  
-        A programmable genome-editing system adapted from bacteria.
-
-        **->  Cas9** ✂️  
-        A DNA-cutting enzyme guided by gRNA.  
-        It binds, unwinds DNA, and creates a precise cut.
-
-        💡 This tool visualizes PAM recognition, DNA unwinding, and Cas9–gRNA binding.
-        """)
 
     # =========================
     # COLUMN 2 — STEP GUIDE
