@@ -208,23 +208,25 @@ with st.expander("🧭 How to use this tool (Click to expand)", expanded=False):
         st.code("ATCGATCGATAGAAATCGATCGATCGACGAGAATTATCGATCGATCGATCGA",
             language="text")
         st.caption("✅ Compatible with **StCas9 (NNAGAAW PAM)**")
-# =========================================================
+    # =========================================================
 # RUN PIPELINE
 # =========================================================
 # ⭐ 6b — Spinner
 if run_btn:
     with st.spinner("Running ML inference and molecular simulation..."):
         res = design_best_grna(dna_sequence, cas9_type=cas9_option)
-        best = res["best"]
-        all_grnas = res["all"]
 
-
-    if res is None:
+    # -------- SAFETY CHECK --------
+    if res is None or not res.get("all"):
         st.error(f"❌ No valid PAM sites detected for {cas9_option}")
         st.stop()
 
+    best = res["best"]
+    all_grnas = res["all"]
+
     risk_label, risk_icon, risk_color = off_target_risk_label(best["off"])
     eff_label, eff_icon, eff_color = on_target_risk_label(best["on"])
+
     gRNA = best["seq"].replace("T", "U")
     start = best["start"]
     end = best["end"]
@@ -235,58 +237,66 @@ if run_btn:
     # LEFT: METRICS
     # =====================================================
     with col1:
-        st.markdown(f'<div class="card"><center>Target site: {start} → {end}</center></div>', unsafe_allow_html=True)
-        st.subheader("📊 ML Prediction")
+        st.markdown(
+            f'<div class="card"><center>Target site: {start} → {end}</center></div>',
+            unsafe_allow_html=True
+        )
 
-        st.markdown(f"""
-<div class="card" style="text-align:center;">
-  <h3>On-Target Efficiency</h3>
-  <h1 style="color:{eff_color};">{eff_icon} {eff_label}</h1>
-  <p>{result["on"]*100:.2f}%</p>
-</div>
-""", unsafe_allow_html=True)
+        st.subheader("📊 ML Prediction")
 
         st.markdown(
             f"""
-           <div class="card" style="text-align:center;">
+            <div class="card" style="text-align:center;">
               <h3>On-Target Efficiency</h3>
-                <h1 style="color:{risk_color}; font-size:42px;">
-                    {risk_icon} {risk_label}
-                </h1>
-                <p> Score: {result["off"]*100:.3f}
-                </p>
+              <h1 style="color:{eff_color};">{eff_icon} {eff_label}</h1>
+              <p>{best["on"]*100:.2f}%</p>
             </div>
             """,
             unsafe_allow_html=True
         )
+
+        st.markdown(
+            f"""
+            <div class="card" style="text-align:center;">
+              <h3>Off-Target Risk</h3>
+              <h1 style="color:{risk_color}; font-size:42px;">
+                {risk_icon} {risk_label}
+              </h1>
+              <p>Score: {best["off"]*100:.3f}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    # =====================================================
+    # ALL CANDIDATE gRNAs
+    # =====================================================
     st.subheader("🧬 Candidate gRNAs Ranked")
 
-# sort by score (high → low)
-all_grnas = sorted(all_grnas, key=lambda x: x["score"], reverse=True)
+    all_grnas = sorted(all_grnas, key=lambda x: x["score"], reverse=True)
 
-for i, g in enumerate(all_grnas):
-    is_best = g == best
+    for i, g in enumerate(all_grnas):
+        is_best = g == best
 
-    border = "3px solid #00ff99" if is_best else "1px solid rgba(255,255,255,0.25)"
-    glow = "box-shadow: 0 0 25px rgba(0,255,153,0.45);" if is_best else ""
+        border = "3px solid #00ff99" if is_best else "1px solid rgba(255,255,255,0.25)"
+        glow = "box-shadow: 0 0 25px rgba(0,255,153,0.45);" if is_best else ""
 
-    st.markdown(
-        f"""
-        <div class="card" style="{glow} border:{border};">
-            <h3>{'🏆 BEST gRNA' if is_best else f'gRNA #{i+1}'}</h3>
+        st.markdown(
+            f"""
+            <div class="card" style="{glow} border:{border};">
+                <h3>{'🏆 BEST gRNA' if is_best else f'gRNA #{i+1}'}</h3>
 
-            <code>{g["seq"].replace("T","U")}</code><br><br>
+                <code>{g["seq"].replace("T","U")}</code><br><br>
 
-            📍 <b>Position:</b> {g["start"]} → {g["end"]}<br>
-            🎯 <b>On-target:</b> {g["on"]*100:.2f}%<br>
-            ⚠️ <b>Off-target:</b> {g["off"]*100:.2f}%<br>
-            ⭐ <b>Combined score:</b> {g["score"]:.3f}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
+                📍 <b>Position:</b> {g["start"]} → {g["end"]}<br>
+                🎯 <b>On-target:</b> {g["on"]*100:.2f}%<br>
+                ⚠️ <b>Off-target:</b> {g["off"]*100:.2f}%<br>
+                ⭐ <b>Combined score:</b> {g["score"]:.3f}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        
     # =====================================================
     # RIGHT: 3D MOLECULAR SIMULATION  
     # =====================================================
