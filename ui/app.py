@@ -278,7 +278,7 @@ if run_btn:
         cursor:pointer;
         background:#00ffcc;
         font-weight:600;
-    ">➕ Zoom In</button>
+    ">➕</button>
     <button onclick="zoomOut()" style="
         padding:8px 14px;
         font-size:16px;
@@ -287,7 +287,7 @@ if run_btn:
         cursor:pointer;
         background:#ff6ec7;
         font-weight:600;
-    ">➖ Zoom Out</button><button onclick="camUp()" style="
+    ">➖</button><button onclick="camUp()" style="
         padding:8px 14px;
         font-size:16px;
         border-radius:8px;
@@ -295,7 +295,7 @@ if run_btn:
         cursor:pointer;
         background:#00ffcc;
         font-weight:600;
-    ">⬆️ Camera Up</button>
+    ">⬆️</button>
     <button onclick="camDown()" style="
         padding:8px 14px;
         font-size:16px;
@@ -304,7 +304,7 @@ if run_btn:
         cursor:pointer;
         background:#ff6ec7;
         font-weight:600;
-    ">⬇️ Camera Down</button>   
+    ">⬇️</button>   
 </div>
        <div id="dna-sim" style="width:100%; height:520px;"></div>
        <div class="card" style="text-align:center; margin-bottom:12px;">
