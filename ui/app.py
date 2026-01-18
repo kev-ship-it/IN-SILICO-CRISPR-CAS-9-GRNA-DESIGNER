@@ -254,11 +254,11 @@ if run_btn:
             f"""
             <div class="card" style="{glow} border:{border};">
                 <h3>{'🏆 BEST gRNA' if is_best else f'gRNA #{i+1}'}</h3>
-                {g["seq"].replace("T","U")}
-                📍 Position: {g["start"]} → {g["end"]}
-                🎯 On-target: {g["on"]*100:.2f}%
-                ⚠️ Off-target:{g["off"]*100:.2f}%
-                ⭐ Combined score:{g["score"]:.3f}
+                🔬 Sequence:{g["seq"].replace("T","U")}<br>
+                📍 Position: {g["start"]} → {g["end"]}<br>
+                🎯 On-target: {g["on"]*100:.2f}%<br>
+                ⚠️ Off-target:{g["off"]*100:.2f}%<br>
+                ⭐ Combined score:{g["score"]:.3f}<br>
             </div>
             """,
             unsafe_allow_html=True
