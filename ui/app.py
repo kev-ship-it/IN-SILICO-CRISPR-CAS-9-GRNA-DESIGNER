@@ -270,7 +270,6 @@ if run_btn:
         st.subheader("🎥 Molecular Mechanism Simulation")
         html = f"""
         <div style="display:flex; gap:12px; margin-bottom:10px;">
-        <center>
     <button onclick="zoomIn()" style="
         padding:8px 14px;
         font-size:16px;
@@ -306,7 +305,6 @@ if run_btn:
         background:#ff6ec7;
         font-weight:600;
     ">⬇️</button> 
-    </center>
 </div>
        <div id="dna-sim" style="width:100%; height:520px;"></div>
        <div class="card" style="text-align:center; margin-bottom:12px;">
