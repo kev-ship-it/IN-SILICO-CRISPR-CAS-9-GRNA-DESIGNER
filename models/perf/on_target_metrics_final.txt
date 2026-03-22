@@ -1,0 +1,10 @@
+
+ON-TARGET DUAL-INPUT MODEL EVALUATION
+=====================================
+R-Squared (R²):       0.4605
+Pearson (Linear):     0.6786
+Spearman (Rank):      0.6609
+Mean Absolute Error:  0.0954
+Mean Squared Error:   0.014275
+RMSE:                 0.1195
+=====================================

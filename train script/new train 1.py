@@ -1,160 +1,119 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-import matplotlib.pyplot as plt
-
+from tensorflow.keras import layers, models, ops
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.layers import (
-    Input, Embedding, Dense, Dropout,
-    LayerNormalization, MultiHeadAttention,
-    GlobalAveragePooling1D, Concatenate
-)
-from tensorflow.keras.models import Model
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.optimizers import Adam
+from sklearn.metrics import r2_score
+from scipy.stats import pearsonr
+from tensorflow.keras import mixed_precision
 
-# =========================
-# CONFIG
-# =========================
-SEQ_LEN_GRNA = 20
-SEQ_LEN_TARGET = 53
-VOCAB = {"A": 1, "C": 2, "G": 3, "T": 4}
-VOCAB_SIZE = 5
+# 0. SPEED BOOST
+mixed_precision.set_global_policy('mixed_float16')
 
-# =========================
-# ENCODING
-# =========================
-def encode_seq(seq, max_len):
-    seq = seq.upper().replace("U", "T")
-    arr = np.zeros(max_len, dtype=np.int32)
-    for i, b in enumerate(seq[:max_len]):
-        arr[i] = VOCAB.get(b, 0)
-    return arr
+# ==========================================
+# 1. DATA PREPARATION (2 INPUTS)
+# ==========================================
+def load_dual_input_data(csv_path="on_target_multi_variant.csv"):
+    print("📊 Loading dataset for Dual-Input...")
+    df = pd.read_csv(csv_path)
+    mapping = {'A':1, 'C':2, 'G':3, 'T':4, 'N':0}
 
-# =========================
-# LOAD DATA
-# =========================
-df = pd.read_csv("on_target_regression.csv")
+    # Assuming 'gRNA_Input' is 20bp and 'Target_Context' is the remaining 54bp
+    # If you only have one 74bp string, we slice it here:
+    def split_tokenize(seq):
+        seq = str(seq).upper()[:74].ljust(74, 'N')
+        grna = [mapping.get(c, 0) for c in seq[20:40]] # Example slice for gRNA
+        context = [mapping.get(c, 0) for c in seq[:20] + seq[40:]] # Remainder
+        return grna, context
 
-grna_seqs = df["gRNA"].astype(str).tolist()
-target_seqs = df["Extended Target"].astype(str).tolist()
-labels = df["Edit Efficiency"].astype(np.float32).values
+    X_g, X_c = [], []
+    for s in df['Sequence_Input']:
+        g, c = split_tokenize(s)
+        X_g.append(g)
+        X_c.append(c)
 
-# 🔥 normalize labels (IMPORTANT)
-labels = labels / 100.0
+    y = df['Efficiency_Score'].values.astype(np.float32)
+    
+    return train_test_split(np.array(X_g), np.array(X_c), y, test_size=0.15, random_state=42)
 
-Xg = np.array([encode_seq(s, SEQ_LEN_GRNA) for s in grna_seqs])
-Xt = np.array([encode_seq(s, SEQ_LEN_TARGET) for s in target_seqs])
-y = labels
+# ==========================================
+# 2. SHARED COMPONENTS
+# ==========================================
+def transformer_block(x, embed_dim, num_heads, ff_dim, rate=0.1):
+    attn = layers.MultiHeadAttention(num_heads=num_heads, key_dim=embed_dim)(x, x)
+    attn = layers.Dropout(rate)(attn)
+    x = layers.Add()([x, attn])
+    x = layers.LayerNormalization(epsilon=1e-6)(x)
 
-Xg_train, Xg_test, Xt_train, Xt_test, y_train, y_test = train_test_split(
-    Xg, Xt, y, test_size=0.2, random_state=42
-)
+    ffn = layers.Dense(ff_dim, activation="gelu")(x)
+    ffn = layers.Dense(embed_dim)(ffn)
+    ffn = layers.Dropout(rate)(ffn)
+    x = layers.Add()([x, ffn])
+    return layers.LayerNormalization(epsilon=1e-6)(x)
 
-# =========================
-# TRANSFORMER BLOCK
-# =========================
-def transformer_block(x, heads=4, dim=64, drop=0.2):
-    attn = MultiHeadAttention(num_heads=heads, key_dim=dim)(x, x)
-    x = LayerNormalization()(x + attn)
+# ==========================================
+# 3. DUAL-INPUT MODEL
+# ==========================================
+def build_dual_input_model(g_len=20, c_len=54):
+    embed_dim = 192
+    
+    # --- INPUTS ---
+    input_g = layers.Input(shape=(g_len,), name="gRNA_In")
+    input_c = layers.Input(shape=(c_len,), name="Context_In")
 
-    ff = Dense(dim * 2, activation="relu")(x)
-    ff = Dense(dim)(ff)
-    x = LayerNormalization()(x + ff)
+    # --- SHARED EMBEDDING ---
+    embedding_layer = layers.Embedding(input_dim=6, output_dim=embed_dim)
+    
+    g_embed = embedding_layer(input_g)
+    c_embed = embedding_layer(input_c)
 
-    return Dropout(drop)(x)
+    # --- CONCATENATE IN LATENT SPACE ---
+    # We join them here so the Multi-scale CNN and Transformer can see the whole picture
+    x = layers.Concatenate(axis=1)([g_embed, c_embed]) # Shape: (None, 74, 192)
 
-def transformer_encoder(seq_len):
-    inp = Input(shape=(seq_len,))
-    x = Embedding(VOCAB_SIZE, 64)(inp)
+    # Positional Encoding (Applied to the combined 74bp representation)
+    positions = tf.range(start=0, limit=74)
+    pos_embed = layers.Embedding(input_dim=74, output_dim=embed_dim)(positions)
+    x = x + pos_embed
 
-    x = transformer_block(x)
-    x = transformer_block(x)
+    # --- MULTI-SCALE CNN ---
+    conv3 = layers.Conv1D(64, 3, padding="same", activation="swish")(x)
+    conv5 = layers.Conv1D(64, 5, padding="same", activation="swish")(x)
+    conv7 = layers.Conv1D(64, 7, padding="same", activation="swish")(x)
+    x = layers.Concatenate()([conv3, conv5, conv7])
+    x = layers.Dense(embed_dim)(x)
+    x = layers.BatchNormalization()(x)
 
-    x = GlobalAveragePooling1D()(x)
-    x = Dense(64, activation="relu")(x)
+    # --- TRANSFORMER BLOCKS ---
+    for _ in range(2):
+        x = transformer_block(x, embed_dim, num_heads=8, ff_dim=384)
 
-    return Model(inp, x)
+    # --- REGRESSION HEAD ---
+    x = layers.GlobalAveragePooling1D()(x)
+    x = layers.Dense(256, activation="swish")(x)
+    x = layers.Dropout(0.3)(x)
+    outputs = layers.Dense(1, activation="sigmoid", dtype="float32")(x)
 
-# =========================
-# BUILD MODEL
-# =========================
-grna_encoder = transformer_encoder(SEQ_LEN_GRNA)
-target_encoder = transformer_encoder(SEQ_LEN_TARGET)
+    model = models.Model(inputs=[input_g, input_c], outputs=outputs)
+    model.compile(optimizer=tf.keras.optimizers.AdamW(2e-4), loss="mse", metrics=["mae"])
+    return model
 
-g_in = Input(shape=(SEQ_LEN_GRNA,), name="gRNA_input")
-t_in = Input(shape=(SEQ_LEN_TARGET,), name="Target_input")
+# ==========================================
+# 4. EXECUTION
+# ==========================================
+X_g_train, X_g_test, X_c_train, X_c_test, y_train, y_test = load_dual_input_data()
 
-g_feat = grna_encoder(g_in)
-t_feat = target_encoder(t_in)
+model = build_dual_input_model()
 
-x = Concatenate()([g_feat, t_feat])
-x = Dense(128, activation="relu")(x)
-x = Dropout(0.3)(x)
-x = Dense(64, activation="relu")(x)
-out = Dense(1)(x)
-
-model = Model([g_in, t_in], out)
-
-model.compile(
-    optimizer=Adam(1e-3),
-    loss="mse",
-    metrics=["mae"]
-)
-
-model.summary()
-
-# =========================
-# TRAIN
-# =========================
-early_stop = EarlyStopping(
-    monitor="val_loss",
-    patience=5,
-    restore_best_weights=True
-)
-
-history = model.fit(
-    [Xg_train, Xt_train], y_train,
-    validation_split=0.2,
-    epochs=50,
-    batch_size=32,
-    callbacks=[early_stop]
+print("🚀 Dual-Input Training Started...")
+model.fit(
+    [X_g_train, X_c_train], y_train,
+    validation_data=([X_g_test, X_c_test], y_test),
+    epochs=30,
+    batch_size=512,
+    callbacks=[tf.keras.callbacks.EarlyStopping(patience=6, restore_best_weights=True)]
 )
 
-# =========================
-# EVALUATE
-# =========================
-loss, mae = model.evaluate([Xg_test, Xt_test], y_test)
-print(f"\nTest MAE (normalized): {mae:.4f}")
-print(f"Test MAE (%): {mae * 100:.2f}%")
-
-# =========================
-# BASELINE CHECK
-# =========================
-baseline = np.mean(np.abs(y_test - np.mean(y_train)))
-print(f"Baseline MAE (%): {baseline * 100:.2f}%")
-
-# =========================
-# PLOTS
-# =========================
-plt.figure()
-plt.plot(history.history["loss"], label="train")
-plt.plot(history.history["val_loss"], label="val")
-plt.legend()
-plt.title("Training Loss")
-plt.show()
-
-preds = model.predict([Xg_test, Xt_test]).flatten()
-
-plt.figure()
-plt.scatter(y_test * 100, preds * 100, alpha=0.5)
-plt.xlabel("True Efficiency (%)")
-plt.ylabel("Predicted Efficiency (%)")
-plt.title("Prediction vs Ground Truth")
-plt.show()
-
-# =========================
-# SAVE MODEL
-# =========================
-model.save("on_target_transformer.keras")
-print("Model saved ✅")
+# SAVE
+model.save("on_target_dual_input.keras")
+print("✅ Saved as 'on_target_dual_input.keras'. This will now match your UI logic.")

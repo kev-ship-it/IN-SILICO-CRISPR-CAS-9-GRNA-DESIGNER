@@ -14,21 +14,27 @@ st.set_page_config(
     layout="wide"
 )
 # =========================================================
-# OFF-TARGET RISK INTERPRETATION (ADDED)
+# OFF-TARGET RISK INTERPRETATION (FIXED)
 # =========================================================
 def off_target_risk_label(score):
-    n_score=score*100
-    if n_score < 0.18:
+    # If your score is 0.0 to 1.0, and you want to use percentages:
+    n_score = score * 100 
+    
+    if n_score <= 18: # Using <= handles the exact boundary
         return "LOW", "🟢", "#00ff99"
-    elif (n_score > 0.18 and n_score < 0.30) :
+    elif 18 < n_score <= 50: # Increased range: 0.18 to 0.50 is usually "Medium" risk
         return "MEDIUM", "🟡", "#ffd166"
     else:
         return "HIGH", "🔴", "#ff4e50"
-        
+
+# =========================================================
+# ON-TARGET EFFICIENCY INTERPRETATION (FIXED)
+# =========================================================
 def on_target_risk_label(score):
+    # Assuming score is 0.0 to 1.0
     if score < 0.35:
         return "LOW", "🔴", "#ff4e50"
-    elif score < 0.75:
+    elif 0.35 <= score < 0.70: # Standard "Medium" range
         return "MEDIUM", "🟡", "#ffd166"
     else:
         return "HIGH", "🟢", "#00ff99"
@@ -635,9 +641,19 @@ cas9.position.set(
    pamY + 1.8, // slight offset toward PAM
    0
 );
-grnaGroup.add(cas9);
+scene.add(cas9);
 scene.add(grnaGroup);
 let unwind = 0;
+// ====================== DNA CUT STATE ======================
+let cutDone = false;
+const CUT_OFFSET = 3;
+
+// determine cut type
+const isBlunt = cas9Type.includes("SpCas9");
+
+// cut positions
+const cutA = targetStart + Math.floor((targetEnd - targetStart) / 2);
+const cutB = isBlunt ? cutA : cutA + 2; // sticky ends offset
 let bind = 0;
 const bindY = (targetStart + targetEnd) / 2 - dnaSeq.length / 2;
 function animate() {{
@@ -668,37 +684,104 @@ function animate() {{
   // ===============================
 // Phase 2: gRNA inserts BETWEEN separated strands (FULL LENGTH)
 // ===============================
-if (unwind > 0.9 && bind < 1) {{
-   cas9.material.emissiveIntensity = 0.3 + bind * 0.7;
-   bind += 0.015;
-   let ntIndex = 0; // real nucleotide counter (ignores "-" sprites)
-   
-   grnaGroup.children.forEach((obj) => {{
-       // only move nucleotide casings (they have geometry + children)
-       if (!obj.geometry) return;
-       const dnaIndex = targetStart + ntIndex;
-       if (dnaIndex >= targetEnd) return;
-       const y = dnaIndex - dnaSeq.length / 2;
-       
-       obj.position.x += (0 - obj.position.x) * 0.15;
-       obj.position.y += (y - obj.position.y) * 0.15;
-       obj.position.z += (0 - obj.position.z) * 0.15;
-       ntIndex++; // advance ONLY when a nucleotide is placed
-   }});
-   cas9.scale.set(
-       1 - bind * 0.45,
-       1 - bind * 0.30,
-       1 - bind * 0.45
-   );
-   
-   // CAMERA: center BOTH native + target DNA
-   const centerX = -9; // midpoint between native (-18) and target (0)
-   camera.position.z += (28 - camera.position.z) * 0.06;
-   camera.position.y += (bindY - camera.position.y) * 0.06;
-   camera.position.x += (centerX - camera.position.x) * 0.06;
-   camera.lookAt(centerX, bindY, 0);
+  if (unwind > 0.9 && bind < 1) {{
+    // Gradually move gRNA into DNA
+   let ntIndex = 0;
+    grnaGroup.children.forEach((obj) => {{
+    if (!obj.geometry) return;
+
+    const dnaIndex = targetStart + ntIndex;
+    if (dnaIndex >= targetEnd) return;
+
+    const y = dnaIndex - dnaSeq.length / 2;
+
+    // Base alignment into DNA
+    obj.position.x += (0 - obj.position.x) * 0.15;
+    obj.position.y += (y - obj.position.y) * 0.15;
+    obj.position.z += (0 - obj.position.z) * 0.15;
+
+    // ===============================
+    // gRNA ARM BEND AFTER PAM (GG)
+    // Enzyme-centered (wraps toward Cas9)
+    // ===============================
+    // ===============================
+    // gRNA ARM BEND (HINGE DOWNWARD)
+    // ===============================
+    if (bind > 0.6) {{
+        const pamOffset = ntIndex - 4; // start bend a few bases after PAM
+        if (pamOffset > 0) {{
+            const bend = Math.min(pamOffset * 0.45, 2.4);
+            obj.position.y += (y - obj.position.y) * 0.15;
+            // Small inward pull toward Cas9 (optional realism)
+            const dx = cas9.position.x - obj.position.x;
+            const dz = cas9.position.z - obj.position.z;
+            const len = Math.sqrt(dx * dx + dz * dz) || 1;
+    
+            obj.position.x += (dx / len) * bend * 0.12;
+            obj.position.z += (dz / len) * bend * 0.12;
+    
+            // Hinge rotation (elbow feel)
+            obj.rotation.x += 0.04;
+        }}
+    }}
+    ntIndex++;
+}});
+
+
+
+    // Gradually shrink Cas9 while it binds
+    const shrinkFactor = 0.55; 
+    const shrinkXFactor = 0.75; 
+    cas9.scale.set(
+        1 - bind * shrinkXFactor,
+        1 - bind * shrinkFactor * 0.7,
+        1 - bind * shrinkFactor
+    );
+
+    cas9.material.emissiveIntensity = 0.3 + bind * 0.7;
+
+    // Once fully bound, switch Cas9 to proper mesh (only once)
+    if (bind >= 0.99 && !cutDone) {{
+        cutDone = true;
+
+        cas9.material = new THREE.MeshStandardMaterial({{
+            color: cas9Color(cas9Type),
+            emissive: cas9Color(cas9Type),
+            emissiveIntensity: 0.35,
+            transparent: true,
+            opacity: 0.6
+        }});
+
+        cas9.scale.set(0.35, 0.35, 0.35);
+        cas9.position.set(0, cutA - dnaSeq.length / 2, 0);
+
+        // Strand cut animation
+        cutDone = true;
+        const GAP = 1.2;
+        
+        // Strand A (top strand moves UP & DOWN)
+        strandA.children.forEach((b, i) => {{
+            if (i >= cutA) b.position.y += GAP;
+            if (i < cutA)  b.position.y -= GAP;
+        }});
+        
+        // Strand B (bottom strand opposite)
+        strandB.children.forEach((b, i) => {{
+            if (i >= cutB) b.position.y += GAP;
+            if (i < cutB)  b.position.y -= GAP;
+        }});
+    }}
+
+    bind += 0.015;
+
+    // CAMERA
+    const centerX = -9;
+    camera.position.z += (28 - camera.position.z) * 0.06;
+    camera.position.y += (bindY - camera.position.y) * 0.06;
+    camera.position.x += (centerX - camera.position.x) * 0.06;
+    camera.lookAt(centerX, bindY, 0);
 }}
-   renderer.render(scene, camera);
+renderer.render(scene, camera);
 }}
 animate();    
 </script>
